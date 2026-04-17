@@ -1,29 +1,394 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>cv.gpt</title>
+    <title>ChatGPT Clone</title>
     <style>
-        *{
+        /* =========================================
+           VARIABLES DE COLOR (Paleta Light Mode)
+           ========================================= */
+        :root {
+            --bg-sidebar: #f9f9f9;
+            --bg-main: #ffffff;
+            --bg-input: #f4f4f4;
+            --bg-hover: #ececec;
+            --bg-button-dark: #000000;
+            
+            --text-primary: #0d0d0d;
+            --text-secondary: #666666;
+            --text-placeholder: #8e8ea0;
+            --text-button-light: #ffffff;
+            
+            --border-light: #e5e5e5;
+            --accent-purple: #ab68ff;
+            --accent-purple-bg: #f3e8ff;
+        }
+
+        /* === RESET Y TIPOGRAFÍA === */
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
+        body {
+            width: 100%;
+            height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            overflow: hidden;
+        }
+
+        /* === BARRA LATERAL (SIDEBAR) === */
+        .sideBar {
+            width: 260px;
+            height: 100%;
+            background-color: var(--bg-sidebar);
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--border-light);
+        }
+
+        /* Cabecera Sidebar */
+        .sidebar-header {
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-primary);
+            font-size: 18px;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .icon-btn:hover {
+            background-color: var(--bg-hover);
+        }
+
+        /* Botón Nuevo Chat */
+        .new-chat-btn {
+            margin: 0 15px 15px 15px;
+            padding: 10px 15px;
+            background-color: var(--bg-hover);
+            border: none;
+            border-radius: 8px;
+            text-align: left;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Listas de navegación */
+        .nav-section {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 0 10px;
+        }
+
+        .nav-list {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .nav-item {
+            padding: 10px;
+            margin-bottom: 2px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-primary);
+        }
+
+        .nav-item:hover {
+            background-color: var(--bg-hover);
+        }
+
+        .section-title {
+            font-size: 12px;
+            color: var(--text-secondary);
+            padding: 10px;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        .history-item {
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Perfil de usuario (Footer Sidebar) */
+        .user-profile {
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--text-secondary);
+        }
+
+        .user-details strong {
+            display: block;
+            font-weight: 600;
+        }
+
+        .user-details span {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .upgrade-btn {
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-light);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* === CONTENIDO PRINCIPAL === */
+        .mainContent {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Barra de Navegación Superior */
+        .topNav {
+            height: 60px;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .topNav-left {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .topNav-left strong {
+            color: var(--text-primary);
+            font-size: 18px;
+        }
+
+        .plus-badge {
+            background-color: var(--accent-purple-bg);
+            color: var(--accent-purple);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            border: none;
+        }
+
+        .topNav-right {
+            display: flex;
+            gap: 15px;
+        }
+
+        /* Área central (Mensaje de bienvenida) */
+        .centerArea {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .welcome-title {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 40px;
+        }
+
+        /* Área del Input */
+        .inputArea {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            position: absolute;
+            bottom: 20px;
+        }
+
+        .inputWrapper {
+            width: 100%;
+            max-width: 768px;
+            background-color: var(--bg-input);
+            border-radius: 30px;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .inputWrapper input {
+            flex-grow: 1;
+            border: none;
+            background: transparent;
+            font-size: 16px;
+            color: var(--text-primary);
+            outline: none;
+            padding: 10px 5px;
+        }
+
+        .inputWrapper input::placeholder {
+            color: var(--text-placeholder);
+        }
+
+        .action-icon {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+        }
+
+        .send-btn {
+            background-color: var(--bg-button-dark);
+            color: var(--text-button-light);
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        /* Pequeñas utilidades para simular iconos rápidamente */
+        .icon-placeholder {
+            font-style: normal;
+        }
     </style>
 </head>
 <body>
-    <header>
-        <div>
-            <nav>
 
-            </nav>
+    <aside class="sideBar">
+        <div class="sidebar-header">
+            <button class="icon-btn">✧</button>
+            <button class="icon-btn">◫</button>
         </div>
-        <div>
-            <div>
-                
+
+        <button class="new-chat-btn">
+            <span class="icon-placeholder">✎</span> Nuevo chat
+        </button>
+
+        <div class="nav-section">
+            <ul class="nav-list">
+                <li class="nav-item"><span class="icon-placeholder">🔍</span> Buscar chats</li>
+                <li class="nav-item"><span class="icon-placeholder">📁</span> Proyectos</li>
+                <li class="nav-item"><span class="icon-placeholder">⌨️</span> Codex</li>
+                <li class="nav-item"><span class="icon-placeholder">•••</span> Más</li>
+            </ul>
+
+            <div class="section-title">GPT</div>
+            <ul class="nav-list">
+                <li class="nav-item"><span class="icon-placeholder">✍️</span> Write For Me</li>
+                <li class="nav-item"><span class="icon-placeholder">🤖</span> AI Humanizer</li>
+                <li class="nav-item"><span class="icon-placeholder">📦</span> Explorar GPT</li>
+            </ul>
+
+            <div class="section-title">Recientes</div>
+            <ul class="nav-list">
+                <li class="nav-item history-item">Mensaje incompleto o aleatorio</li>
+                <li class="nav-item history-item">Saludos iniciales</li>
+                <li class="nav-item history-item">Cálculo del PIN</li>
+                <li class="nav-item history-item">Ideas para conocerla</li>
+                <li class="nav-item history-item">Abecedario japonés anime</li>
+                <li class="nav-item history-item">Precios para páginas web</li>
+            </ul>
+        </div>
+
+        <div class="user-profile">
+            <div class="user-info">
+                <div class="avatar"></div>
+                <div class="user-details">
+                    <strong>Adrián Jimé...</strong>
+                    <span>Gratis</span>
+                </div>
             </div>
+            <button class="upgrade-btn">Mejorar plan</button>
         </div>
-    </header>
+    </aside>
+
+    <main class="mainContent">
+        <nav class="topNav">
+            <div class="topNav-left">
+                <strong>ChatGPT</strong> <span>v</span>
+            </div>
+            <button class="plus-badge">
+                ✦ Obtener Plus
+            </button>
+            <div class="topNav-right">
+                <span class="icon-btn">👤</span>
+                <span class="icon-btn">⟳</span>
+            </div>
+        </nav>
+        
+        <section class="centerArea">
+            <h1 class="welcome-title">¿Por dónde deberíamos empezar?</h1>
+        </section>
+
+        <section class="inputArea">
+            <div class="inputWrapper">
+                <button class="action-icon">＋</button>
+                <input type="text" placeholder="Pregunta lo que quieras">
+                <button class="action-icon">🎤</button>
+                <button class="send-btn">
+                    ılı
+                </button>
+            </div>
+        </section>
+    </main>
+
 </body>
 </html>
