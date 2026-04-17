@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatGPT Clone</title>
+    <title>CV | Adrián Jiménez Calderón</title>
     <style>
         /* =========================================
-           VARIABLES DE COLOR (Paleta Light Mode)
-           ========================================= */
+                    VARIABLES DE COLOR
+        ========================================= */
         :root {
             --bg-sidebar: #f9f9f9;
             --bg-main: #ffffff;
@@ -21,8 +21,6 @@
             --text-button-light: #ffffff;
             
             --border-light: #e5e5e5;
-            --accent-purple: #ab68ff;
-            --accent-purple-bg: #f3e8ff;
         }
 
         /* === RESET Y TIPOGRAFÍA === */
@@ -52,7 +50,6 @@
             border-right: 1px solid var(--border-light);
         }
 
-        /* Cabecera Sidebar */
         .sidebar-header {
             padding: 15px;
             display: flex;
@@ -74,7 +71,6 @@
             background-color: var(--bg-hover);
         }
 
-        /* Botón Nuevo Chat */
         .new-chat-btn {
             margin: 0 15px 15px 15px;
             padding: 10px 15px;
@@ -91,11 +87,21 @@
             gap: 10px;
         }
 
-        /* Listas de navegación */
+        /* Listas de navegación (Secciones) */
         .nav-section {
             flex-grow: 1;
-            overflow-y: auto;
+            overflow-y: auto; /* Esta propiedad hace que el contenido scrollee si supera el alto disponible */
             padding: 0 10px;
+        }
+
+        .section-title {
+            font-size: 12px;
+            color: var(--text-secondary);
+            padding: 10px;
+            margin-top: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .nav-list {
@@ -119,27 +125,20 @@
             background-color: var(--bg-hover);
         }
 
-        .section-title {
-            font-size: 12px;
-            color: var(--text-secondary);
-            padding: 10px;
-            margin-top: 10px;
-            font-weight: 600;
-        }
-
+        /* Estilo específico para cortar textos largos en el historial */
         .history-item {
-            color: var(--text-secondary);
+            display: block; 
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            color: var(--text-secondary);
         }
 
-        /* Perfil de usuario (Footer Sidebar) */
+        /* Perfil de usuario (Adrián Jiménez Calderón) */
         .user-profile {
             padding: 15px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
             border-top: 1px solid var(--border-light);
         }
 
@@ -148,33 +147,38 @@
             align-items: center;
             gap: 10px;
             font-size: 14px;
+            width: 100%;
         }
 
         .avatar {
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            background-color: var(--text-secondary);
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        .user-details {
+            overflow: hidden;
         }
 
         .user-details strong {
             display: block;
             font-weight: 600;
+            white-space: nowrap; /* Evita los saltos de linea, lo mantiene en una sola linea */
+            overflow: hidden; /* Si el texto sale de los limites lo oculta */
+            text-overflow: ellipsis; /* Va junto a 174-176, justo antes del corte añade '...' para que se sepa que hay mas texto */
         }
 
         .user-details span {
             font-size: 12px;
             color: var(--text-secondary);
-        }
-
-        .upgrade-btn {
-            background-color: var(--bg-main);
-            border: 1px solid var(--border-light);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
         }
 
         /* === CONTENIDO PRINCIPAL === */
@@ -185,49 +189,21 @@
             position: relative;
         }
 
-        /* Barra de Navegación Superior */
         .topNav {
             height: 60px;
             padding: 0 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 16px;
-            font-weight: 600;
         }
 
         .topNav-left {
             display: flex;
             align-items: center;
             gap: 5px;
-            cursor: pointer;
-            color: var(--text-secondary);
+            font-weight: 600;
         }
 
-        .topNav-left strong {
-            color: var(--text-primary);
-            font-size: 18px;
-        }
-
-        .plus-badge {
-            background-color: var(--accent-purple-bg);
-            color: var(--accent-purple);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            cursor: pointer;
-            border: none;
-        }
-
-        .topNav-right {
-            display: flex;
-            gap: 15px;
-        }
-
-        /* Área central (Mensaje de bienvenida) */
         .centerArea {
             flex-grow: 1;
             display: flex;
@@ -239,8 +215,9 @@
 
         .welcome-title {
             font-size: 32px;
-            font-weight: 600;
+            font-weight: 400;
             margin-bottom: 40px;
+            text-align: center;
         }
 
         /* Área del Input */
@@ -274,23 +251,6 @@
             padding: 10px 5px;
         }
 
-        .inputWrapper input::placeholder {
-            color: var(--text-placeholder);
-        }
-
-        .action-icon {
-            background: none;
-            border: none;
-            font-size: 20px;
-            color: var(--text-secondary);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 32px;
-            height: 32px;
-        }
-
         .send-btn {
             background-color: var(--bg-button-dark);
             color: var(--text-button-light);
@@ -303,71 +263,57 @@
             justify-content: center;
             cursor: pointer;
         }
-
-        /* Pequeñas utilidades para simular iconos rápidamente */
-        .icon-placeholder {
-            font-style: normal;
-        }
     </style>
 </head>
 <body>
 
     <aside class="sideBar">
         <div class="sidebar-header">
-            <button class="icon-btn">✧</button>
+            <button class="icon-btn">🐣</button>
             <button class="icon-btn">◫</button>
         </div>
 
         <button class="new-chat-btn">
-            <span class="icon-placeholder">✎</span> Nuevo chat
+            <span>✎</span> Nuevo apartado
         </button>
 
         <div class="nav-section">
+            <div class="section-title">Currículum</div>
             <ul class="nav-list">
-                <li class="nav-item"><span class="icon-placeholder">🔍</span> Buscar chats</li>
-                <li class="nav-item"><span class="icon-placeholder">📁</span> Proyectos</li>
-                <li class="nav-item"><span class="icon-placeholder">⌨️</span> Codex</li>
-                <li class="nav-item"><span class="icon-placeholder">•••</span> Más</li>
+                <li class="nav-item"><span>👤</span> Sobre mí</li>
+                <li class="nav-item"><span>💼</span> Experiencia</li>
+                <li class="nav-item"><span>🎓</span> Estudios</li>
+                <li class="nav-item"><span>🌍</span> Idiomas</li>
+                <li class="nav-item"><span>📞</span> Datos de contacto</li>
             </ul>
 
-            <div class="section-title">GPT</div>
+            <div class="section-title">Historial de chats</div>
             <ul class="nav-list">
-                <li class="nav-item"><span class="icon-placeholder">✍️</span> Write For Me</li>
-                <li class="nav-item"><span class="icon-placeholder">🤖</span> AI Humanizer</li>
-                <li class="nav-item"><span class="icon-placeholder">📦</span> Explorar GPT</li>
-            </ul>
-
-            <div class="section-title">Recientes</div>
-            <ul class="nav-list">
-                <li class="nav-item history-item">Mensaje incompleto o aleatorio</li>
-                <li class="nav-item history-item">Saludos iniciales</li>
-                <li class="nav-item history-item">Cálculo del PIN</li>
-                <li class="nav-item history-item">Ideas para conocerla</li>
-                <li class="nav-item history-item">Abecedario japonés anime</li>
-                <li class="nav-item history-item">Precios para páginas web</li>
-            </ul>
+                <li class="nav-item history-item">¿Cuáles son tus puntos fuertes?</li>
+                <li class="nav-item history-item">Proyectos desarrollados en React</li>
+                <li class="nav-item history-item">Dime tus lenguajes de programación principales</li>
+                <li class="nav-item history-item">Experiencia trabajando en equipos ágiles</li>
+                <li class="nav-item history-item">¿Qué aportarías a nuestra empresa?</li>
+                <li class="nav-item history-item">Disponibilidad de incorporación</li>
+                </ul>
         </div>
 
         <div class="user-profile">
             <div class="user-info">
-                <div class="avatar"></div>
+                <div class="avatar">AJ</div>
                 <div class="user-details">
-                    <strong>Adrián Jimé...</strong>
-                    <span>Gratis</span>
+                    <strong>Adrián Jiménez Calderón</strong>
+                    <span>sección</span>
                 </div>
             </div>
-            <button class="upgrade-btn">Mejorar plan</button>
         </div>
     </aside>
 
     <main class="mainContent">
         <nav class="topNav">
             <div class="topNav-left">
-                <strong>ChatGPT</strong> <span>v</span>
+                <strong>GcPvT</strong>
             </div>
-            <button class="plus-badge">
-                ✦ Obtener Plus
-            </button>
             <div class="topNav-right">
                 <span class="icon-btn">👤</span>
                 <span class="icon-btn">⟳</span>
@@ -375,17 +321,14 @@
         </nav>
         
         <section class="centerArea">
-            <h1 class="welcome-title">¿Por dónde deberíamos empezar?</h1>
+            <h1 class="welcome-title">¿Qué quieres saber sobre mi perfil?</h1>
         </section>
 
         <section class="inputArea">
             <div class="inputWrapper">
-                <button class="action-icon">＋</button>
-                <input type="text" placeholder="Pregunta lo que quieras">
-                <button class="action-icon">🎤</button>
-                <button class="send-btn">
-                    ılı
-                </button>
+                <button class="icon-btn" style="font-size: 20px;">＋</button>
+                <input type="text" placeholder="Pregunta sobre mi experiencia, estudios...">
+                <button class="send-btn">↑</button>
             </div>
         </section>
     </main>
