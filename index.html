@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,16 +15,14 @@
             --bg-input: #f4f4f4;
             --bg-hover: #ececec;
             --bg-button-dark: #000000;
-            
             --text-primary: #0d0d0d;
             --text-secondary: #666666;
             --text-placeholder: #8e8ea0;
             --text-button-light: #ffffff;
-            
             --border-light: #e5e5e5;
+            --ai-avatar-bg: #333333;
         }
 
-        /* === RESET Y TIPOGRAFÍA === */
         * {
             margin: 0;
             padding: 0;
@@ -40,7 +39,15 @@
             overflow: hidden;
         }
 
-        /* === BARRA LATERAL (SIDEBAR) === */
+        .logo-icon {
+            width: 32px;  
+            height: 32px; 
+            object-fit: contain; 
+            flex-shrink: 0; 
+            border-radius: 50%;
+        }
+
+        /* === SIDEBAR === */
         .sideBar {
             width: 260px;
             height: 100%;
@@ -74,7 +81,7 @@
         .new-chat-btn {
             margin: 0 15px 15px 15px;
             padding: 10px 15px;
-            background-color: var(--bg-hover);
+            background-color: transparent;
             border: none;
             border-radius: 8px;
             text-align: left;
@@ -87,11 +94,23 @@
             gap: 10px;
         }
 
-        /* Listas de navegación (Secciones) */
+        .new-chat-btn:hover {
+            background-color: var(--bg-hover);
+        }
+
         .nav-section {
             flex-grow: 1;
-            overflow-y: auto; /* Esta propiedad hace que el contenido scrollee si supera el alto disponible */
+            overflow-y: auto;
             padding: 0 10px;
+        }
+
+        .nav-section::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .nav-section::-webkit-scrollbar-thumb {
+            background-color: #ccc;
+            border-radius: 10px;
         }
 
         .section-title {
@@ -100,7 +119,6 @@
             padding: 10px;
             margin-top: 10px;
             font-weight: 600;
-            text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
@@ -121,20 +139,19 @@
             color: var(--text-primary);
         }
 
-        .nav-item:hover {
+        .nav-item:hover,
+        .nav-item.active {
             background-color: var(--bg-hover);
         }
 
-        /* Estilo específico para cortar textos largos en el historial */
         .history-item {
-            display: block; 
+            display: block;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             color: var(--text-secondary);
         }
 
-        /* Perfil de usuario (Adrián Jiménez Calderón) */
         .user-profile {
             padding: 15px;
             display: flex;
@@ -150,11 +167,11 @@
             width: 100%;
         }
 
-        .avatar {
+        .avatar-circle {
             width: 36px;
             height: 36px;
             border-radius: 50%;
-            background-color: #333;
+            background-color: var(--ai-avatar-bg);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -171,9 +188,9 @@
         .user-details strong {
             display: block;
             font-weight: 600;
-            white-space: nowrap; /* Evita los saltos de linea, lo mantiene en una sola linea */
-            overflow: hidden; /* Si el texto sale de los limites lo oculta */
-            text-overflow: ellipsis; /* Va junto a 174-176, justo antes del corte añade '...' para que se sepa que hay mas texto */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .user-details span {
@@ -181,7 +198,7 @@
             color: var(--text-secondary);
         }
 
-        /* === CONTENIDO PRINCIPAL === */
+        /* === MAIN CONTENT === */
         .mainContent {
             flex-grow: 1;
             display: flex;
@@ -195,6 +212,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-shrink: 0;
         }
 
         .topNav-left {
@@ -220,14 +238,59 @@
             text-align: center;
         }
 
-        /* Área del Input */
+        .chat-container {
+            display: none;
+            flex-grow: 1;
+            flex-direction: column;
+            overflow-y: auto;
+            padding: 20px 20px 120px 20px;
+        }
+
+        .chat-message {
+            max-width: 768px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            padding: 15px 0;
+            gap: 15px;
+            line-height: 1.6;
+        }
+
+        .chat-message.user {
+            justify-content: flex-end;
+        }
+
+        .chat-message.user .bubble {
+            background-color: var(--bg-input);
+            padding: 12px 18px;
+            border-radius: 20px;
+            max-width: 70%;
+        }
+
+        .chat-message.ai {
+            justify-content: flex-start;
+        }
+
+        .chat-message.ai .avatar-circle {
+            width: 32px;
+            height: 32px;
+            font-size: 11px;
+        }
+
+        /* Para que se respeten los saltos de línea del objeto */
+        .chat-message p {
+            white-space: pre-line;
+            margin-top: 5px;
+        }
+
         .inputArea {
             width: 100%;
             display: flex;
             justify-content: center;
             padding: 20px;
             position: absolute;
-            bottom: 20px;
+            bottom: 0;
+            background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, var(--bg-main) 40%);
         }
 
         .inputWrapper {
@@ -265,7 +328,7 @@
         }
 
         /* =========================================
-        DISEÑO RESPONSIVE (Móviles y Tablets menores a 768px)
+                responsive (menores a 768px)
         ========================================= */
         @media (max-width: 768px) {
             /* Oculta la barra lateral temporalmente */
@@ -290,42 +353,49 @@
         }
     </style>
 </head>
+
 <body>
 
     <aside class="sideBar">
         <div class="sidebar-header">
-            <button class="icon-btn">🐣</button>
-            <button class="icon-btn">◫</button>
+            <button class="icon-btn">
+                <img class="logo-icon" src="pato.png" alt="Logo">
+            </button>
+            <button class="icon-btn">☰</button> <!--TODO Darle funcionalidad -->
         </div>
 
-        <button class="new-chat-btn">
-            <span>✏️</span> Nueva conversación
+        <button class="new-chat-btn" onclick="location.reload()">
+            <span>✏️</span> Nuevo apartado
         </button>
 
         <div class="nav-section">
             <div class="section-title">Currículum</div>
             <ul class="nav-list">
-                <li class="nav-item"><span>👤</span> Sobre mí</li>
-                <li class="nav-item"><span>💼</span> Experiencia</li>
-                <li class="nav-item"><span>🎓</span> Estudios</li>
-                <li class="nav-item"><span>🌍</span> Idiomas</li>
-                <li class="nav-item"><span>📞</span> Datos de contacto</li>
+                <li class="nav-item cv-trigger" data-section="sobre_mi"><span>👤</span> Sobre mí</li>
+                <li class="nav-item cv-trigger" data-section="contacto"><span>📞</span> Datos de contacto</li>
+                <li class="nav-item cv-trigger" data-section="experiencia"><span>💼</span> Experiencia</li>
+                <li class="nav-item cv-trigger" data-section="estudios"><span>🎓</span> Estudios</li>
+                <li class="nav-item cv-trigger" data-section="idiomas"><span>🌍</span> Idiomas</li>
+                <li class="nav-item cv-trigger" data-section="proyecto"><span>🚀</span> Proyectos</li>
             </ul>
 
+            <!--TODO Añadir funcionalidad para que coja los datos de historyData -->
             <div class="section-title">Historial de chats</div>
             <ul class="nav-list">
-                <li class="nav-item history-item">¿Cuáles son tus puntos fuertes?</li>
-                <li class="nav-item history-item">Proyectos desarrollados en React</li>
-                <li class="nav-item history-item">Dime tus lenguajes de programación principales</li>
-                <li class="nav-item history-item">Experiencia trabajando en equipos ágiles</li>
-                <li class="nav-item history-item">¿Qué aportarías a nuestra empresa?</li>
-                <li class="nav-item history-item">Disponibilidad de incorporación</li>
-                </ul>
+                <li class="nav-item history-item history-trigger" data-section="h_retos">¿Cuál ha sido tu mayor reto
+                    técnico?</li>
+                <li class="nav-item history-item history-trigger" data-section="h_berlin">Cuéntame más sobre tu año en
+                    Berlín</li>
+                <li class="nav-item history-item history-trigger" data-section="h_42">¿Cómo fue la experiencia en 42
+                    Barcelona?</li>
+                <li class="nav-item history-item history-trigger" data-section="h_padel">El padel y el trabajo en equipo
+                </li>
+            </ul>
         </div>
 
         <div class="user-profile">
             <div class="user-info">
-                <div class="avatar">AJ</div>
+                <div class="avatar-circle">AJ</div>
                 <div class="user-details">
                     <strong>Adrián Jiménez Calderón</strong>
                     <span>sección</span>
@@ -336,27 +406,175 @@
 
     <main class="mainContent">
         <nav class="topNav">
-            <div class="topNav-left">
-                <strong>GcPvT</strong>
-            </div>
+            <div class="topNav-left"><strong>GcPvT</strong></div>
             <div class="topNav-right">
                 <span class="icon-btn">👤</span>
                 <span class="icon-btn">⟳</span>
             </div>
         </nav>
-        
-        <section class="centerArea">
+
+        <section class="centerArea" id="welcomeScreen">
             <h1 class="welcome-title">¿Qué quieres saber sobre mi perfil?</h1>
         </section>
+
+        <section class="chat-container" id="chatContainer"></section>
 
         <section class="inputArea">
             <div class="inputWrapper">
                 <button class="icon-btn" style="font-size: 20px;">＋</button>
-                <input type="text" placeholder="Pregunta sobre mi experiencia, estudios...">
-                <button class="send-btn">↑</button>
+                <input type="text" id="chatInput" placeholder="Pregunta sobre mi experiencia, estudios..." readonly>
+                <button class="send-btn" id="sendBtn">↑</button> <!--TODO Sustituir icono -->
             </div>
         </section>
     </main>
 
+    <script>
+        // === 1. OBJETO DATOS DEL CURRÍCULUM ===
+        const cvData = {
+            sobre_mi: {
+                question: `Háblame sobre ti, ¿quién eres?`,
+                answer: `¡Hola! Soy Adrián Jiménez Calderón, tengo 29 años y soy de Barcelona. Mi perfil combina la curiosidad científica con la pasión por la ingeniería.
+                
+                Mi viaje comenzó en la carrera dFísica, donde descubrí la programación. Tras pasar un año intensivo en 42 Barcelona, decidí empezar Ingeniería Informática, donde actualmente sigo formándome.`
+            },
+            experiencia: {
+                question: `Cuéntame sobre tu experiencia laboral.`,
+                answer: `He trabajado desde muy joven en diversos sectores, lo que me ha dado una gran capacidad de adaptación:
+                
+                • Hostelería: Gestión de equipos y atención al público bajo presión.
+                • Logística y Mantenimiento: Organización y resolución de problemas prácticos.
+                • Idiomas: Estancia de un año en Berlín trabajando y aprendiendo alemán e inglés.`
+            },
+            estudios: {
+                question: `¿Cuál es tu formación académica?`,
+                answer: `Mi formación actual es:
+                
+                • Grado en Ingeniería Informática - UNIR: (En curso).
+                • Piscina y formación en 42 Barcelona: Aprendizaje práctico basado en proyectos.
+                • Grado en Física: (Pausado) Base analítica sólida y resolución de problemas.
+                • FOAP programación web, IA y bases de datos`
+            },
+            idiomas: {
+                question: `¿Qué idiomas dominas?`,
+                answer: `Me apasionan los idiomas. Mi estancia en Berlín con 20 años fue clave:
+                
+                • Castellano: Nativo.
+                • Catalán: Nativo.
+                • Inglés: Nivel medio (B1).
+                • Alemán: Nivel medio (B1).
+                • Japonés: Nivel inicial (N5)`
+            },
+            contacto: {
+                question: `Dame tus datos de contacto.`,
+                answer: `Puedes contactarme directamente aquí:
+                
+                📱 Teléfono: 601 243 028
+                📧 Email: adrian.jimdev@gmail.com
+                🔗 LinkedIn: www.linkedin.com/in/ajimenez-dev`
+            },
+            proyecto: {
+                question: `¿Cuáles han sido tus últimos proyectos?`,
+                answer: `Puedes ver mis proyectos aqui:
+                
+                ***PROYECTOS***`
+            }
+        };
+
+        // === 2. OBJETO HISTORIAL DE CHATS ===
+        const historyData = {
+            h_retos: {
+                question: `¿Cuál ha sido tu mayor reto técnico?`,
+                answer: `Mi mayor reto fue el año en **42 Barcelona**. Aprender a programar desde cero sin profesores, basándome solo en la lógica y la colaboración con compañeros, me enseñó que no hay problema que no se pueda resolver con persistencia.`
+            },
+            h_berlin: {
+                question: `Cuéntame más sobre tu año en Berlín`,
+                answer: `Vivir en Berlín a los 20 años fue un punto de inflexión. No solo por el alemán y el inglés, sino por la independencia y la apertura mental que te da vivir en una ciudad tan cosmopolita trabajando en sectores totalmente nuevos para mí.`
+            },
+            h_42: {
+                question: `¿Cómo fue la experiencia en 42 Barcelona?`,
+                answer: `Fue increíble. Descubrí que me encanta picar código. El sistema de aprendizaje "peer-to-peer" (entre iguales) me enseñó a buscarme la vida y a entender que en informática nunca dejas de aprender.`
+            },
+            h_padel: {
+                question: `El padel y el trabajo en equipo`,
+                answer: `Llevo años compitiendo en padel. Es un deporte que requiere una comunicación constante con tu pareja. Esa misma sincronización es la que intento aplicar cuando trabajo en proyectos de desarrollo con otros compañeros.`
+            }
+        };
+
+        const welcomeScreen = document.getElementById('welcomeScreen');
+        const chatContainer = document.getElementById('chatContainer');
+        const chatInput = document.getElementById('chatInput');
+        let isTyping = false;
+
+        function setActiveItem(clickedItem) {
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            clickedItem.classList.add('active');
+        }
+
+        function appendMessage(sender, text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${sender}`;
+            messageDiv.innerHTML = sender === 'user' ?
+                `<div class="bubble">${text}</div>` :
+                `<div class="avatar-circle">AJ</div><div><strong>ChatGPT CV</strong><p>${text}</p></div>`;
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function escribirTexto(textoPregunta, textoRespuesta, delay = 40) {
+            let i = 0;
+            welcomeScreen.style.display = 'none';
+            chatContainer.style.display = 'flex';
+            chatContainer.innerHTML = '';
+            chatInput.value = '';
+
+            function escribir() {
+                if (i < textoPregunta.length) {
+                    chatInput.value += textoPregunta[i];
+                    i++;
+                    setTimeout(escribir, delay);
+                } else {
+                    setTimeout(() => {
+                        chatInput.value = '';
+                        appendMessage('user', textoPregunta);
+                        setTimeout(() => {
+                            appendMessage('ai', textoRespuesta);
+                            isTyping = false;
+                        }, 800);
+                    }, 500);
+                }
+            }
+            escribir();
+        }
+
+        // Busca en cvData
+        document.querySelectorAll('.cv-trigger').forEach(item => {
+            item.addEventListener('click', function () {
+                if (isTyping) return;
+                isTyping = true;
+                setActiveItem(this);
+                const section = this.getAttribute('data-section');
+                const data = cvData[section];
+                if (data) escribirTexto(data.question, data.answer);
+            });
+        });
+
+        // Busca en historyData
+        document.querySelectorAll('.history-trigger').forEach(item => {
+            item.addEventListener('click', function () {
+                if (isTyping) return;
+                setActiveItem(this);
+                const section = this.getAttribute('data-section');
+                const data = historyData[section];
+                if (data) {
+                    welcomeScreen.style.display = 'none';
+                    chatContainer.style.display = 'flex';
+                    chatContainer.innerHTML = '';
+                    appendMessage('user', data.question);
+                    appendMessage('ai', data.answer);
+                }
+            });
+        });
+    </script>
 </body>
+
 </html>
