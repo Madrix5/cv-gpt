@@ -263,6 +263,31 @@
             justify-content: center;
             cursor: pointer;
         }
+
+        /* =========================================
+        DISEÑO RESPONSIVE (Móviles y Tablets menores a 768px)
+        ========================================= */
+        @media (max-width: 768px) {
+            /* Oculta la barra lateral temporalmente */
+            .sideBar {
+                display: none; 
+                position: absolute;
+                z-index: 1000;
+                box-shadow: 5px 0 15px rgba(0,0,0,0.1);
+            }
+
+            /* Reduce el tamaño del título de bienvenida */
+            .welcome-title {
+                font-size: 24px;
+                padding: 0 15px;
+            }
+
+            /* Ajusta el espacio del input inferior */
+            .inputArea {
+                padding: 10px;
+                bottom: 10px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -274,7 +299,7 @@
         </div>
 
         <button class="new-chat-btn">
-            <span>✎</span> Nuevo apartado
+            <span>✏️</span> Nueva conversación
         </button>
 
         <div class="nav-section">
