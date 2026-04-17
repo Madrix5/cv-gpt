@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CV | Adrián Jiménez Calderón</title>
+    <title>CV | Adrián Jiménez Calderón</title> <!-- Añadir variable -->
     <style>
         /* =========================================
                     VARIABLES DE COLOR
@@ -330,7 +330,7 @@
         /* =========================================
                 responsive (menores a 768px)
         ========================================= */
-        @media (max-width: 768px) {
+        @media (max-width: 768px) {            /* TODO Falta responsive para tablet*/
             /* Oculta la barra lateral temporalmente */
             .sideBar {
                 display: none; 
@@ -371,6 +371,7 @@
         <div class="nav-section">
             <div class="section-title">Currículum</div>
             <ul class="nav-list">
+                <!-- TODO revisar documento para ver que secciones faltan -->
                 <li class="nav-item cv-trigger" data-section="sobre_mi"><span>👤</span> Sobre mí</li>
                 <li class="nav-item cv-trigger" data-section="contacto"><span>📞</span> Datos de contacto</li>
                 <li class="nav-item cv-trigger" data-section="experiencia"><span>💼</span> Experiencia</li>
@@ -379,7 +380,7 @@
                 <li class="nav-item cv-trigger" data-section="proyecto"><span>🚀</span> Proyectos</li>
             </ul>
 
-            <!--TODO Añadir funcionalidad para que coja los datos de historyData -->
+            <!--TODO Añadir funcionalidad para que coja los datos de historyData, y funcionalidad de chat temporal -->
             <div class="section-title">Historial de chats</div>
             <ul class="nav-list">
                 <li class="nav-item history-item history-trigger" data-section="h_retos">¿Cuál ha sido tu mayor reto
@@ -395,10 +396,10 @@
 
         <div class="user-profile">
             <div class="user-info">
-                <div class="avatar-circle">AJ</div>
+                <div class="avatar-circle">AJ</div> <!-- TODO añadir variable (solo iniciales del nombre) -->
                 <div class="user-details">
-                    <strong>Adrián Jiménez Calderón</strong>
-                    <span>sección</span>
+                    <strong>Adrián Jiménez Calderón</strong> <!-- TODO añadir variable -->
+                    <span>sección</span> <!-- TODO añadir funcionalidad, debe indicar en que sección te encuentras -->
                 </div>
             </div>
         </div>
@@ -429,6 +430,7 @@
     </main>
 
     <script>
+        <!-- TODO ver como añadir las variables del documento aqui, en los dos objetos -->
         // === 1. OBJETO DATOS DEL CURRÍCULUM ===
         const cvData = {
             sobre_mi: {
