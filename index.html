@@ -328,9 +328,9 @@
         }
 
         /* =========================================
-                responsive (menores a 768px)
+                responsive (menores a 768px)            TODO Falta responsive para tablet
         ========================================= */
-        @media (max-width: 768px) {            /* TODO Falta responsive para tablet*/
+        @media (max-width: 768px) {
             /* Oculta la barra lateral temporalmente */
             .sideBar {
                 display: none; 
@@ -580,3 +580,16 @@
 </body>
 
 </html>
+
+<!-- 
+INTRODUCIR VARIABLE EN HTML
+{% if email... %}
+    <etiqueta>{{ email }}<fin_etiqueta>
+{% else %}
+    ........
+{% endif %}
+
+INTRODUCIR VARIABLE EN JS
+const nombre = "{{nombre}}";
+console.log(nombre)
+-->
