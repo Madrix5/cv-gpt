@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CV | Adrián Jiménez Calderón</title> <!-- Añadir variable -->
+    <title>CV | Adrián Jiménez Calderón</title>
     <style>
         /* =========================================
                     VARIABLES DE COLOR
@@ -55,6 +55,17 @@
             display: flex;
             flex-direction: column;
             border-right: 1px solid var(--border-light);
+            transition: transform 0.3s ease; 
+        }
+
+        /* Clase para ocultar el sidebar en escritorio */
+        body.sidebar-closed .sideBar {
+            display: none;
+        }
+
+        /* Mostrar el botón hamburguesa superior en escritorio si el sidebar está oculto */
+        body.sidebar-closed .mobile-menu-btn {
+            display: block;
         }
 
         .sidebar-header {
@@ -196,6 +207,7 @@
         .user-details span {
             font-size: 12px;
             color: var(--text-secondary);
+            text-transform: capitalize;
         }
 
         /* === MAIN CONTENT === */
@@ -220,6 +232,16 @@
             align-items: center;
             gap: 5px;
             font-weight: 600;
+        }
+
+        .mobile-menu-btn {
+            display: none; /* Oculto en escritorio por defecto */
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            margin-right: 15px;
+            color: var(--text-primary);
         }
 
         .centerArea {
@@ -277,7 +299,6 @@
             font-size: 11px;
         }
 
-        /* Para que se respeten los saltos de línea del objeto */
         .chat-message p {
             white-space: pre-line;
             margin-top: 5px;
@@ -328,24 +349,29 @@
         }
 
         /* =========================================
-                responsive (menores a 768px)            TODO Falta responsive para tablet
+                RESPONSIVE (menores a 768px)
         ========================================= */
         @media (max-width: 768px) {
-            /* Oculta la barra lateral temporalmente */
+            .mobile-menu-btn {
+                display: block; 
+            }
+
             .sideBar {
-                display: none; 
                 position: absolute;
                 z-index: 1000;
+                transform: translateX(-100%); 
                 box-shadow: 5px 0 15px rgba(0,0,0,0.1);
             }
 
-            /* Reduce el tamaño del título de bienvenida */
+            .sideBar.show {
+                transform: translateX(0);
+            }
+
             .welcome-title {
                 font-size: 24px;
                 padding: 0 15px;
             }
 
-            /* Ajusta el espacio del input inferior */
             .inputArea {
                 padding: 10px;
                 bottom: 10px;
@@ -355,13 +381,12 @@
 </head>
 
 <body>
-
-    <aside class="sideBar">
+    <aside class="sideBar" id="sideBar">
         <div class="sidebar-header">
-            <button class="icon-btn">
+            <button class="icon-btn" id="logo-btn" title="Volver al inicio">
                 <img class="logo-icon" src="pato.png" alt="Logo">
             </button>
-            <button class="icon-btn">☰</button> <!--TODO Darle funcionalidad -->
+            <button class="icon-btn" id="close-menu" title="Cerrar menú">☰</button>
         </div>
 
         <button class="new-chat-btn" onclick="location.reload()">
@@ -371,35 +396,36 @@
         <div class="nav-section">
             <div class="section-title">Currículum</div>
             <ul class="nav-list">
-                <!-- TODO revisar documento para ver que secciones faltan -->
-                <li class="nav-item cv-trigger" data-section="sobre_mi"><span>👤</span> Sobre mí</li>
-                <li class="nav-item cv-trigger" data-section="contacto"><span>📞</span> Datos de contacto</li>
-                <li class="nav-item cv-trigger" data-section="experiencia"><span>💼</span> Experiencia</li>
-                <li class="nav-item cv-trigger" data-section="estudios"><span>🎓</span> Estudios</li>
-                <li class="nav-item cv-trigger" data-section="idiomas"><span>🌍</span> Idiomas</li>
-                <li class="nav-item cv-trigger" data-section="proyecto"><span>🚀</span> Proyectos</li>
+                <li class="nav-item cv-trigger" data-section="info_personal"><span>👤</span> Información personal</li>
+                <li class="nav-item cv-trigger" data-section="perfil"><span>🎯</span> Perfil profesional</li>
+                <li class="nav-item cv-trigger" data-section="experiencia"><span>💼</span> Experiencia laboral</li>
+                <li class="nav-item cv-trigger" data-section="educacion"><span>🎓</span> Educación (Reglada)</li>
+                <li class="nav-item cv-trigger" data-section="cursos"><span>📜</span> Educación complementaria</li>
+                <li class="nav-item cv-trigger" data-section="skills"><span>🛠️</span> Skills</li>
+                <li class="nav-item cv-trigger" data-section="idiomas"><span>🌍</span> Lenguajes</li>
+                <li class="nav-item cv-trigger" data-section="proyectos"><span>🚀</span> Proyectos</li>
+                <li class="nav-item cv-trigger" data-section="logros"><span>🏆</span> Logros</li>
+                <li class="nav-item cv-trigger" data-section="voluntariados"><span>🤝</span> Voluntariados</li>
+                <li class="nav-item cv-trigger" data-section="redes"><span>🌐</span> Redes Sociales</li>
+                <li class="nav-item cv-trigger" data-section="hobbies"><span>⚽</span> Intereses / Hobbies</li>
+                <li class="nav-item cv-trigger" data-section="adicional"><span>➕</span> Información adicional</li>
             </ul>
 
-            <!--TODO Añadir funcionalidad para que coja los datos de historyData, y funcionalidad de chat temporal -->
             <div class="section-title">Historial de chats</div>
             <ul class="nav-list">
-                <li class="nav-item history-item history-trigger" data-section="h_retos">¿Cuál ha sido tu mayor reto
-                    técnico?</li>
-                <li class="nav-item history-item history-trigger" data-section="h_berlin">Cuéntame más sobre tu año en
-                    Berlín</li>
-                <li class="nav-item history-item history-trigger" data-section="h_42">¿Cómo fue la experiencia en 42
-                    Barcelona?</li>
-                <li class="nav-item history-item history-trigger" data-section="h_padel">El padel y el trabajo en equipo
-                </li>
+                <li class="nav-item history-item history-trigger" data-section="h_retos">¿Cuál ha sido tu mayor reto técnico?</li>
+                <li class="nav-item history-item history-trigger" data-section="h_berlin">Cuéntame más sobre tu año en Berlín</li>
+                <li class="nav-item history-item history-trigger" data-section="h_42">¿Cómo fue la experiencia en 42 Barcelona?</li>
+                <li class="nav-item history-item history-trigger" data-section="h_padel">El padel y el trabajo en equipo</li>
             </ul>
         </div>
 
         <div class="user-profile">
             <div class="user-info">
-                <div class="avatar-circle">AJ</div> <!-- TODO añadir variable (solo iniciales del nombre) -->
+                <div class="avatar-circle">AJ</div>
                 <div class="user-details">
-                    <strong>Adrián Jiménez Calderón</strong> <!-- TODO añadir variable -->
-                    <span>sección</span> <!-- TODO añadir funcionalidad, debe indicar en que sección te encuentras -->
+                    <strong>Adrián Jiménez Calderón</strong>
+                    <span id="current-section-label">sección</span>
                 </div>
             </div>
         </div>
@@ -407,7 +433,10 @@
 
     <main class="mainContent">
         <nav class="topNav">
-            <div class="topNav-left"><strong>GcPvT</strong></div>
+            <div class="topNav-left">
+                <button class="mobile-menu-btn" id="open-menu" title="Abrir menú">☰</button>
+                <strong>GcPvT</strong>
+            </div>
             <div class="topNav-right">
                 <span class="icon-btn">👤</span>
                 <span class="icon-btn">⟳</span>
@@ -424,65 +453,99 @@
             <div class="inputWrapper">
                 <button class="icon-btn" style="font-size: 20px;">＋</button>
                 <input type="text" id="chatInput" placeholder="Pregunta sobre mi experiencia, estudios..." readonly>
-                <button class="send-btn" id="sendBtn">↑</button> <!--TODO Sustituir icono -->
+                <button class="send-btn" id="sendBtn">➤</button>
             </div>
         </section>
     </main>
 
     <script>
-        <!-- TODO ver como añadir las variables del documento aqui, en los dos objetos -->
-        // === 1. OBJETO DATOS DEL CURRÍCULUM ===
         const cvData = {
-            sobre_mi: {
-                question: `Háblame sobre ti, ¿quién eres?`,
-                answer: `¡Hola! Soy Adrián Jiménez Calderón, tengo 29 años y soy de Barcelona. Mi perfil combina la curiosidad científica con la pasión por la ingeniería.
+            info_personal: {
+                question: `¿Podrías darme tu información personal y datos básicos?`,
+                answer: `¡Hola! Soy Adrián Jiménez Calderón.
                 
-                Mi viaje comenzó en la carrera dFísica, donde descubrí la programación. Tras pasar un año intensivo en 42 Barcelona, decidí empezar Ingeniería Informática, donde actualmente sigo formándome.`
+                • Edad: 29 años
+                • Ubicación: Barcelona
+                • Teléfono: 601 243 028
+                • Email: adrian.jimdev@gmail.com`
+            },
+            perfil: {
+                question: `Háblame sobre tu perfil profesional.`,
+                answer: `Mi perfil combina la curiosidad científica con la pasión por la ingeniería y el desarrollo de software.
+                
+                Mi viaje comenzó en la carrera de Física, donde descubrí la programación. Tras comprobar que me apasionaba y pasar un año intensivo de código en 42 Barcelona, decidí enfocarme 100% en ello y empezar Ingeniería Informática, donde continúo desarrollando mi perfil analítico y técnico.`
             },
             experiencia: {
                 question: `Cuéntame sobre tu experiencia laboral.`,
-                answer: `He trabajado desde muy joven en diversos sectores, lo que me ha dado una gran capacidad de adaptación:
+                answer: `He trabajado desde muy joven en diversos sectores, lo que me ha dado una enorme capacidad de adaptación, gestión y resolución:
                 
-                • Hostelería: Gestión de equipos y atención al público bajo presión.
-                • Logística y Mantenimiento: Organización y resolución de problemas prácticos.
-                • Idiomas: Estancia de un año en Berlín trabajando y aprendiendo alemán e inglés.`
+                • Hostelería: Ha sido mi sector principal, gestionando equipos y atención al público bajo gran presión.
+                • Logística y Almacén: Trabajo como mozo organizando operativas.
+                • Mantenimiento y Ventas: Resolución de problemas prácticos y trato directo con el cliente.`
             },
-            estudios: {
-                question: `¿Cuál es tu formación académica?`,
-                answer: `Mi formación actual es:
+            educacion: {
+                question: `¿Cuál es tu formación académica reglada?`,
+                answer: `Mi formación universitaria y reglada consta de:
                 
-                • Grado en Ingeniería Informática - UNIR: (En curso).
-                • Piscina y formación en 42 Barcelona: Aprendizaje práctico basado en proyectos.
-                • Grado en Física: (Pausado) Base analítica sólida y resolución de problemas.
-                • FOAP programación web, IA y bases de datos`
+                • Grado en Ingeniería Informática - UNIR: (En curso). Consolidando las bases matemáticas y algorítmicas del desarrollo.
+                • Grado en Física: (Pausado). Me aportó una base analítica muy fuerte para la resolución lógica de problemas complejos.`
+            },
+            cursos: {
+                question: `¿Qué formación complementaria o no reglada tienes?`,
+                answer: `Me mantengo en formación continua a través de:
+                
+                • 42 Barcelona: Realicé la "Piscina" y cursé un año intensivo. Sistema de aprendizaje "peer-to-peer" (sin profesores) basado 100% en proyectos de código.
+                • FOAP: Programación web, Inteligencia Artificial y gestión de Bases de Datos.`
+            },
+            skills: {
+                question: `¿Cuáles son tus habilidades técnicas principales (Skills)?`,
+                answer: `Actualmente me desenvuelvo con las siguientes tecnologías:
+                
+                ***REEMPLAZAR POR TUS SKILLS***`
             },
             idiomas: {
                 question: `¿Qué idiomas dominas?`,
-                answer: `Me apasionan los idiomas. Mi estancia en Berlín con 20 años fue clave:
+                answer: `Me apasionan los idiomas. Mi estancia de un año trabajando en Berlín con 20 años fue clave para desarrollarlos:
                 
                 • Castellano: Nativo.
                 • Catalán: Nativo.
                 • Inglés: Nivel medio (B1).
                 • Alemán: Nivel medio (B1).
-                • Japonés: Nivel inicial (N5)`
+                • Japonés: Nivel inicial (N5).`
             },
-            contacto: {
-                question: `Dame tus datos de contacto.`,
-                answer: `Puedes contactarme directamente aquí:
-                
-                📱 Teléfono: 601 243 028
-                📧 Email: adrian.jimdev@gmail.com
-                🔗 LinkedIn: www.linkedin.com/in/ajimenez-dev`
-            },
-            proyecto: {
+            proyectos: {
                 question: `¿Cuáles han sido tus últimos proyectos?`,
-                answer: `Puedes ver mis proyectos aqui:
+                answer: `Puedes ver mis proyectos aquí:
                 
-                ***PROYECTOS***`
+                ***REEMPLAZAR POR PROYECTOS***`
+            },
+            logros: {
+                question: `¿Puedes destacar algún logro importante?`,
+                answer: `***REEMPLAZAR POR TUS LOGROS***`
+            },
+            voluntariados: {
+                question: `¿Tienes experiencia en voluntariados?`,
+                answer: `***REEMPLAZAR POR VOLUNTARIADOS***`
+            },
+            redes: {
+                question: `¿Dónde puedo encontrar tus redes sociales profesionales?`,
+                answer: `Puedes conectar conmigo y revisar mi código en:
+                
+                🔗 LinkedIn: [www.linkedin.com/in/ajimenez-dev](https://www.linkedin.com/in/ajimenez-dev)
+                🐙 GitHub: ***REEMPLAZAR CON TU GITHUB***`
+            },
+            hobbies: {
+                question: `¿Cuáles son tus intereses y hobbies fuera del trabajo?`,
+                answer: `El deporte siempre ha sido fundamental en mi vida. Me crié jugando a fútbol, me he preparado para cursas individuales y llevo años compitiendo y jugando por diversión a pádel. 
+                
+                Todo esto me ha enseñado disciplina y a saber trabajar a la perfección en equipos grandes, pequeños o de forma individual.`
+            },
+            adicional: {
+                question: `¿Hay alguna información adicional que debamos saber?`,
+                answer: `***REEMPLAZAR***`
             }
         };
 
-        // === 2. OBJETO HISTORIAL DE CHATS ===
         const historyData = {
             h_retos: {
                 question: `¿Cuál ha sido tu mayor reto técnico?`,
@@ -494,7 +557,7 @@
             },
             h_42: {
                 question: `¿Cómo fue la experiencia en 42 Barcelona?`,
-                answer: `Fue increíble. Descubrí que me encanta picar código. El sistema de aprendizaje "peer-to-peer" (entre iguales) me enseñó a buscarme la vida y a entender que en informática nunca dejas de aprender.`
+                answer: `Fue increíble. Descubrí que me encanta picar código. El sistema de aprendizaje "peer-to-peer" me enseñó a buscarme la vida y a entender que en informática nunca dejas de aprender.`
             },
             h_padel: {
                 question: `El padel y el trabajo en equipo`,
@@ -505,11 +568,15 @@
         const welcomeScreen = document.getElementById('welcomeScreen');
         const chatContainer = document.getElementById('chatContainer');
         const chatInput = document.getElementById('chatInput');
+        const currentSectionLabel = document.getElementById('current-section-label');
         let isTyping = false;
 
         function setActiveItem(clickedItem) {
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
             clickedItem.classList.add('active');
+            
+            let textoLimpio = clickedItem.innerText.replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[\u2600-\u27FF]|\s+/g, ' ').trim();
+            currentSectionLabel.innerText = textoLimpio;
         }
 
         function appendMessage(sender, text) {
@@ -548,7 +615,7 @@
             escribir();
         }
 
-        // Busca en cvData
+        // Eventos CV
         document.querySelectorAll('.cv-trigger').forEach(item => {
             item.addEventListener('click', function () {
                 if (isTyping) return;
@@ -560,7 +627,7 @@
             });
         });
 
-        // Busca en historyData
+        // Eventos Historial
         document.querySelectorAll('.history-trigger').forEach(item => {
             item.addEventListener('click', function () {
                 if (isTyping) return;
@@ -576,20 +643,63 @@
                 }
             });
         });
+
+        // ==========================================
+        // FUNCIONALIDAD LOGO (Volver al inicio suave)
+        // ==========================================
+        document.getElementById('logo-btn').addEventListener('click', () => {
+            if (isTyping) return; 
+            
+            // Oculta el chat y vuelve a enseñar la bienvenida
+            welcomeScreen.style.display = 'flex';
+            chatContainer.style.display = 'none';
+            chatContainer.innerHTML = ''; 
+            chatInput.value = ''; 
+            
+            // Resetea tu nombre de sección y botones activos
+            currentSectionLabel.innerText = 'sección';
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+        });
+
+        // ==========================================
+        // FUNCIONALIDAD MENÚ LATERAL (Ocultar / Mostrar)
+        // ==========================================
+        const sideBar = document.getElementById('sideBar');
+        const openMenuBtn = document.getElementById('open-menu');
+        const closeMenuBtn = document.getElementById('close-menu');
+
+        // Abrir menú (Botón en la barra de navegación superior)
+        openMenuBtn.addEventListener('click', () => {
+            if (window.innerWidth <= 768) {
+                // En móvil usa la animación de deslizar
+                sideBar.classList.add('show');
+            } else {
+                // En ordenador quita la clase que lo oculta
+                document.body.classList.remove('sidebar-closed');
+            }
+        });
+
+        // Cerrar menú (Botón de las 3 rallas en la barra lateral)
+        closeMenuBtn.addEventListener('click', () => {
+            if (window.innerWidth <= 768) {
+                // En móvil esconde la barra deslizándola
+                sideBar.classList.remove('show');
+            } else {
+                // En ordenador le añade la clase al body que la desaparece
+                document.body.classList.add('sidebar-closed');
+            }
+        });
+
+        // Opcional: Cerrar la barra al hacer clic en un enlace si estás en el móvil
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    sideBar.classList.remove('show');
+                }
+            });
+        });
+
     </script>
 </body>
 
 </html>
-
-<!-- 
-INTRODUCIR VARIABLE EN HTML
-{% if email... %}
-    <etiqueta>{{ email }}<fin_etiqueta>
-{% else %}
-    ........
-{% endif %}
-
-INTRODUCIR VARIABLE EN JS
-const nombre = "{{nombre}}";
-console.log(nombre)
--->
