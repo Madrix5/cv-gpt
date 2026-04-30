@@ -1,968 +1,999 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CV | Adrián Jiménez Calderón</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      CV | {{cv.personal_info.nombre}} {{cv.personal_info.apellidos}}
+    </title>
     <style>
-        /* =========================================
-                    VARIABLES DE COLOR (MODO CLARO)
+      /* =========================================
+            VARIABLES DE COLOR (MODO CLARO)
         ========================================= */
-        :root {
-            --bg-sidebar: #f9f9f9;
-            --bg-main: #ffffff;
-            --bg-input: #f4f4f4;
-            --bg-hover: #ececec;
-            --bg-button-dark: #000000;
-            --text-primary: #0d0d0d;
-            --text-secondary: #666666;
-            --text-placeholder: #8e8ea0;
-            --text-button-light: #ffffff;
-            --border-light: #e5e5e5;
-            --ai-avatar-bg: #333333;
-        }
+      :root {
+        --bg-sidebar: #f9f9f9;
+        --bg-main: #ffffff;
+        --bg-input: #f4f4f4;
+        --bg-hover: #ececec;
+        --bg-button-dark: #000000;
+        --text-primary: #0d0d0d;
+        --text-secondary: #666666;
+        --text-placeholder: #8e8ea0;
+        --text-button-light: #ffffff;
+        --border-light: #e5e5e5;
+        --ai-avatar-bg: #333333;
+      }
 
-        /* =========================================
-                    VARIABLES DE COLOR (MODO OSCURO)
+      /* =========================================
+            VARIABLES DE COLOR (MODO OSCURO)
         ========================================= */
-        body.dark-mode {
-            --bg-sidebar: #202123;
-            --bg-main: #343541;
-            --bg-input: #40414f;
-            --bg-hover: #2a2b32;
-            --bg-button-dark: #10a37f;
-            --text-primary: #ececf1;
-            --text-secondary: #c5c5d2;
-            --text-placeholder: #8e8ea0;
-            --text-button-light: #ffffff;
-            --border-light: #4d4d4f;
-            --ai-avatar-bg: #10a37f;
-        }
+      body.dark-mode {
+        --bg-sidebar: #202123;
+        --bg-main: #343541;
+        --bg-input: #40414f;
+        --bg-hover: #2a2b32;
+        --bg-button-dark: #10a37f;
+        --text-primary: #ececf1;
+        --text-secondary: #c5c5d2;
+        --text-placeholder: #8e8ea0;
+        --text-button-light: #ffffff;
+        --border-light: #4d4d4f;
+        --ai-avatar-bg: #10a37f;
+      }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        body {
-            width: 100%;
-            height: 100vh;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            display: flex;
-            background-color: var(--bg-main);
-            color: var(--text-primary);
-            overflow: hidden;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
+      body {
+        width: 100%;
+        height: 100vh;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+          Arial, sans-serif;
+        display: flex;
+        background-color: var(--bg-main);
+        color: var(--text-primary);
+        overflow: hidden;
+        transition:
+          background-color 0.3s ease,
+          color 0.3s ease;
+      }
 
-        .logo-icon {
-            width: 32px;
-            height: 32px;
-            object-fit: contain;
-            flex-shrink: 0;
-            border-radius: 50%;
-        }
+      .logo-icon {
+        width: 32px;
+        height: 32px;
+        object-fit: contain;
+        flex-shrink: 0;
+        border-radius: 50%;
+      }
 
-        /* === SIDEBAR === */
+      /* === SIDEBAR === */
+      .sideBar {
+        width: 260px;
+        height: 100%;
+        background-color: var(--bg-sidebar);
+        display: flex;
+        flex-direction: column;
+        border-right: 1px solid var(--border-light);
+        transition:
+          transform 0.3s ease,
+          background-color 0.3s ease,
+          width 0.3s ease;
+      }
+
+      body.sidebar-closed .sideBar {
+        display: none;
+      }
+
+      body.sidebar-closed .mobile-menu-btn {
+        display: block;
+      }
+
+      .sidebar-header {
+        padding: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .icon-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--text-primary);
+        font-size: 18px;
+        padding: 5px;
+        border-radius: 5px;
+        transition: color 0.3s ease;
+      }
+
+      .icon-btn:hover {
+        background-color: var(--bg-hover);
+      }
+
+      .new-chat-btn {
+        margin: 0 15px 15px 15px;
+        padding: 10px 15px;
+        background-color: transparent;
+        border: none;
+        border-radius: 8px;
+        text-align: left;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .new-chat-btn:hover {
+        background-color: var(--bg-hover);
+      }
+
+      .nav-section {
+        flex-grow: 1;
+        overflow-y: auto;
+        padding: 0 10px;
+      }
+
+      .nav-section::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .nav-section::-webkit-scrollbar-thumb {
+        background-color: var(--border-light);
+        border-radius: 10px;
+      }
+
+      .section-title {
+        font-size: 12px;
+        color: var(--text-secondary);
+        padding: 10px;
+        margin-top: 10px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+      }
+
+      .nav-list {
+        list-style: none;
+        margin-bottom: 20px;
+      }
+
+      .nav-item {
+        padding: 10px;
+        margin-bottom: 2px;
+        border-radius: 8px;
+        font-size: 14px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--text-primary);
+      }
+
+      .nav-item:hover,
+      .nav-item.active {
+        background-color: var(--bg-hover);
+      }
+
+      .history-item {
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: var(--text-secondary);
+      }
+
+      .user-profile {
+        padding: 15px;
+        display: flex;
+        align-items: center;
+        border-top: 1px solid var(--border-light);
+      }
+
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 14px;
+        width: 100%;
+      }
+
+      .avatar-circle {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background-color: var(--ai-avatar-bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 12px;
+        flex-shrink: 0;
+        transition: background-color 0.3s ease;
+      }
+
+      .user-details {
+        overflow: hidden;
+      }
+
+      .user-details strong {
+        display: block;
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .user-details span {
+        font-size: 12px;
+        color: var(--text-secondary);
+        text-transform: capitalize;
+      }
+
+      /* === MAIN CONTENT === */
+      .mainContent {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+      }
+
+      .topNav {
+        height: 60px;
+        padding: 0 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-shrink: 0;
+      }
+
+      .topNav-left {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-weight: 600;
+      }
+
+      .mobile-menu-btn {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        margin-right: 15px;
+        color: var(--text-primary);
+      }
+
+      .centerArea {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+
+      .welcome-title {
+        font-size: 32px;
+        font-weight: 400;
+        margin-bottom: 40px;
+        text-align: center;
+      }
+
+      .chat-container {
+        display: none;
+        flex-grow: 1;
+        flex-direction: column;
+        overflow-y: auto;
+        padding: 20px 20px 120px 20px;
+      }
+
+      .chat-container::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .chat-container::-webkit-scrollbar-thumb {
+        background-color: var(--border-light);
+        border-radius: 10px;
+      }
+
+      .chat-message {
+        max-width: 768px;
+        width: 100%;
+        margin: 0 auto;
+        display: flex;
+        padding: 15px 0;
+        gap: 15px;
+        line-height: 1.6;
+      }
+
+      .chat-message.user {
+        justify-content: flex-end;
+      }
+
+      .chat-message.user .bubble {
+        background-color: var(--bg-input);
+        padding: 12px 18px;
+        border-radius: 20px;
+        max-width: 70%;
+      }
+
+      .chat-message.ai {
+        justify-content: flex-start;
+      }
+
+      .chat-message.ai .avatar-circle {
+        width: 32px;
+        height: 32px;
+        font-size: 11px;
+      }
+
+      .chat-message p {
+        white-space: pre-line;
+        margin-top: 5px;
+      }
+
+      /* === CARRUSEL DE PROYECTOS === */
+      .carousel-wrapper {
+        max-width: 768px;
+        width: 100%;
+        margin: 0 auto;
+        padding: 5px 0 20px 47px;
+      }
+
+      .carousel-container {
+        display: flex;
+        gap: 15px;
+        overflow-x: auto;
+        padding-bottom: 10px;
+        scrollbar-width: thin;
+      }
+
+      .carousel-container::-webkit-scrollbar {
+        height: 6px;
+      }
+
+      .carousel-container::-webkit-scrollbar-thumb {
+        background-color: var(--border-light);
+        border-radius: 10px;
+      }
+
+      .project-card {
+        min-width: 260px;
+        max-width: 280px;
+        background-color: var(--bg-main);
+        border: 1px solid var(--border-light);
+        border-radius: 12px;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        flex-shrink: 0;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+        transition:
+          border-color 0.3s ease,
+          background-color 0.3s ease;
+      }
+
+      .project-title {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .project-desc {
+        font-size: 13px;
+        color: var(--text-secondary);
+        flex-grow: 1;
+        line-height: 1.4;
+      }
+
+      .project-tech {
+        font-size: 12px;
+        color: var(--text-primary);
+        background-color: var(--bg-hover);
+        padding: 6px 10px;
+        border-radius: 6px;
+        font-weight: 500;
+        margin-top: auto;
+        text-align: center;
+        transition: background-color 0.3s ease;
+      }
+
+      .inputArea {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        padding: 20px;
+        position: absolute;
+        bottom: 0;
+        background-image: linear-gradient(
+          180deg,
+          transparent 0%,
+          var(--bg-main) 40%
+        );
+      }
+
+      .inputWrapper {
+        width: 100%;
+        max-width: 768px;
+        background-color: var(--bg-input);
+        border-radius: 30px;
+        padding: 10px 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border: 1px solid var(--border-light);
+        transition:
+          background-color 0.3s ease,
+          border-color 0.3s ease;
+      }
+
+      .inputWrapper input {
+        flex-grow: 1;
+        border: none;
+        background: transparent;
+        font-size: 16px;
+        color: var(--text-primary);
+        outline: none;
+        padding: 10px 5px;
+      }
+
+      .send-btn {
+        background-color: var(--bg-button-dark);
+        color: var(--text-button-light);
+        border: none;
+        border-radius: 50%;
+        width: 35px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      /* RESPONSIVE */
+      @media (max-width: 1024px) and (min-width: 769px) {
         .sideBar {
-            width: 260px;
-            height: 100%;
-            background-color: var(--bg-sidebar);
-            display: flex;
-            flex-direction: column;
-            border-right: 1px solid var(--border-light);
-            transition: transform 0.3s ease, background-color 0.3s ease, width 0.3s ease;
-        }
-
-        body.sidebar-closed .sideBar {
-            display: none;
-        }
-
-        body.sidebar-closed .mobile-menu-btn {
-            display: block;
-        }
-
-        .sidebar-header {
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .icon-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: var(--text-primary);
-            font-size: 18px;
-            padding: 5px;
-            border-radius: 5px;
-            transition: color 0.3s ease;
-        }
-
-        .icon-btn:hover {
-            background-color: var(--bg-hover);
-        }
-
-        .new-chat-btn {
-            margin: 0 15px 15px 15px;
-            padding: 10px 15px;
-            background-color: transparent;
-            border: none;
-            border-radius: 8px;
-            text-align: left;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            color: var(--text-primary);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .new-chat-btn:hover {
-            background-color: var(--bg-hover);
-        }
-
-        .nav-section {
-            flex-grow: 1;
-            overflow-y: auto;
-            padding: 0 10px;
-        }
-
-        .nav-section::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .nav-section::-webkit-scrollbar-thumb {
-            background-color: var(--border-light);
-            border-radius: 10px;
-        }
-
-        .section-title {
-            font-size: 12px;
-            color: var(--text-secondary);
-            padding: 10px;
-            margin-top: 10px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-
-        .nav-list {
-            list-style: none;
-            margin-bottom: 20px;
-        }
-
-        .nav-item {
-            padding: 10px;
-            margin-bottom: 2px;
-            border-radius: 8px;
-            font-size: 14px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--text-primary);
-        }
-
-        .nav-item:hover,
-        .nav-item.active {
-            background-color: var(--bg-hover);
-        }
-
-        .history-item {
-            display: block;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            color: var(--text-secondary);
-        }
-
-        .user-profile {
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            border-top: 1px solid var(--border-light);
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 14px;
-            width: 100%;
-        }
-
-        .avatar-circle {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background-color: var(--ai-avatar-bg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 12px;
-            flex-shrink: 0;
-            transition: background-color 0.3s ease;
-        }
-
-        .user-details {
-            overflow: hidden;
-        }
-
-        .user-details strong {
-            display: block;
-            font-weight: 600;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .user-details span {
-            font-size: 12px;
-            color: var(--text-secondary);
-            text-transform: capitalize;
-        }
-
-        /* === MAIN CONTENT === */
-        .mainContent {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
-
-        .topNav {
-            height: 60px;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-shrink: 0;
-        }
-
-        .topNav-left {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-weight: 600;
-        }
-
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            margin-right: 15px;
-            color: var(--text-primary);
-        }
-
-        .centerArea {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+          width: 220px;
         }
 
         .welcome-title {
-            font-size: 32px;
-            font-weight: 400;
-            margin-bottom: 40px;
-            text-align: center;
-        }
-
-        .chat-container {
-            display: none;
-            flex-grow: 1;
-            flex-direction: column;
-            overflow-y: auto;
-            padding: 20px 20px 120px 20px;
-        }
-
-        .chat-container::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .chat-container::-webkit-scrollbar-thumb {
-            background-color: var(--border-light);
-            border-radius: 10px;
-        }
-
-        .chat-message {
-            max-width: 768px;
-            width: 100%;
-            margin: 0 auto;
-            display: flex;
-            padding: 15px 0;
-            gap: 15px;
-            line-height: 1.6;
-        }
-
-        .chat-message.user {
-            justify-content: flex-end;
+          font-size: 28px;
         }
 
         .chat-message.user .bubble {
-            background-color: var(--bg-input);
-            padding: 12px 18px;
-            border-radius: 20px;
-            max-width: 70%;
+          max-width: 85%;
         }
 
-        .chat-message.ai {
-            justify-content: flex-start;
-        }
-
-        .chat-message.ai .avatar-circle {
-            width: 32px;
-            height: 32px;
-            font-size: 11px;
-        }
-
-        .chat-message p {
-            white-space: pre-line;
-            margin-top: 5px;
-        }
-
-        /* === CARRUSEL DE PROYECTOS === */
-        .carousel-wrapper {
-            max-width: 768px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 5px 0 20px 47px;
-        }
-
-        .carousel-container {
-            display: flex;
-            gap: 15px;
-            overflow-x: auto;
-            padding-bottom: 10px;
-            scrollbar-width: thin;
-        }
-
-        .carousel-container::-webkit-scrollbar {
-            height: 6px;
-        }
-
-        .carousel-container::-webkit-scrollbar-thumb {
-            background-color: var(--border-light);
-            border-radius: 10px;
-        }
-
-        .project-card {
-            min-width: 260px;
-            max-width: 280px;
-            background-color: var(--bg-main);
-            border: 1px solid var(--border-light);
-            border-radius: 12px;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            flex-shrink: 0;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
-            transition: border-color 0.3s ease, background-color 0.3s ease;
-        }
-
-        .project-title {
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .project-desc {
-            font-size: 13px;
-            color: var(--text-secondary);
-            flex-grow: 1;
-            line-height: 1.4;
-        }
-
-        .project-tech {
-            font-size: 12px;
-            color: var(--text-primary);
-            background-color: var(--bg-hover);
-            padding: 6px 10px;
-            border-radius: 6px;
-            font-weight: 500;
-            margin-top: auto;
-            text-align: center;
-            transition: background-color 0.3s ease;
-        }
-
-        .inputArea {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            padding: 20px;
-            position: absolute;
-            bottom: 0;
-            background-image: linear-gradient(180deg, transparent 0%, var(--bg-main) 40%);
+        .chat-container {
+          padding: 20px 15px 120px 15px;
         }
 
         .inputWrapper {
-            width: 100%;
-            max-width: 768px;
-            background-color: var(--bg-input);
-            border-radius: 30px;
-            padding: 10px 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border: 1px solid var(--border-light);
-            transition: background-color 0.3s ease, border-color 0.3s ease;
+          max-width: 90%;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .mobile-menu-btn {
+          display: block;
         }
 
-        .inputWrapper input {
-            flex-grow: 1;
-            border: none;
-            background: transparent;
-            font-size: 16px;
-            color: var(--text-primary);
-            outline: none;
-            padding: 10px 5px;
+        .sideBar {
+          position: absolute;
+          z-index: 1000;
+          transform: translateX(-100%);
+          box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
         }
 
-        .send-btn {
-            background-color: var(--bg-button-dark);
-            color: var(--text-button-light);
-            border: none;
-            border-radius: 50%;
-            width: 35px;
-            height: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
+        .sideBar.show {
+          transform: translateX(0);
         }
 
-        /* RESPONSIVE */
-        @media (max-width: 1024px) and (min-width: 769px) {
-            .sideBar {
-                width: 220px;
-            }
-
-            .welcome-title {
-                font-size: 28px;
-            }
-
-            .chat-message.user .bubble {
-                max-width: 85%;
-            }
-
-            .chat-container {
-                padding: 20px 15px 120px 15px;
-            }
-
-            .inputWrapper {
-                max-width: 90%;
-            }
+        .welcome-title {
+          font-size: 24px;
+          padding: 0 15px;
         }
 
-        @media (max-width: 768px) {
-            .mobile-menu-btn {
-                display: block;
-            }
-
-            .sideBar {
-                position: absolute;
-                z-index: 1000;
-                transform: translateX(-100%);
-                box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
-            }
-
-            .sideBar.show {
-                transform: translateX(0);
-            }
-
-            .welcome-title {
-                font-size: 24px;
-                padding: 0 15px;
-            }
-
-            .chat-container {
-                padding: 15px 10px 100px 10px;
-            }
-
-            .chat-message.user .bubble {
-                max-width: 90%;
-            }
-
-            .inputArea {
-                padding: 10px;
-                bottom: 10px;
-            }
-
-            .carousel-wrapper {
-                padding-left: 10px;
-                padding-right: 10px;
-            }
+        .chat-container {
+          padding: 15px 10px 100px 10px;
         }
+
+        .chat-message.user .bubble {
+          max-width: 90%;
+        }
+
+        .inputArea {
+          padding: 10px;
+          bottom: 10px;
+        }
+
+        .carousel-wrapper {
+          padding-left: 10px;
+          padding-right: 10px;
+        }
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <aside class="sideBar" id="sideBar">
-        <div class="sidebar-header">
-            <button class="icon-btn" id="logo-btn" title="Volver al inicio"><img class="logo-icon" src="pato.png"
-                    alt="Logo"></button>
-            <button class="icon-btn" id="close-menu" title="Cerrar menú">☰</button>
+      <div class="sidebar-header">
+        <button class="icon-btn" id="logo-btn" title="Volver al inicio">
+          <img class="logo-icon" src="pato.png" alt="Logo" />
+        </button>
+        <button class="icon-btn" id="close-menu" title="Cerrar menú">☰</button>
+      </div>
+
+      <button class="new-chat-btn" onclick="location.reload()">
+        <span>✏️</span> Nuevo apartado
+      </button>
+
+      <div class="nav-section">
+        <div class="section-title">Currículum</div>
+        <ul class="nav-list">
+          <!-- TODO Añadir if para mostrar o no mostrar secciones -->
+          <li class="nav-item cv-trigger" data-section="info_personal">
+            <span>👤</span> Información personal
+          </li>
+          <li class="nav-item cv-trigger" data-section="perfil">
+            <span>🎯</span> Perfil profesional
+          </li>
+          <li class="nav-item cv-trigger" data-section="experiencia">
+            <span>💼</span> Experiencia laboral
+          </li>
+          <li class="nav-item cv-trigger" data-section="educacion">
+            <span>🎓</span> Educación (Reglada)
+          </li>
+          <li class="nav-item cv-trigger" data-section="cursos">
+            <span>📜</span> Educación complementaria
+          </li>
+          <li class="nav-item cv-trigger" data-section="skills">
+            <span>🛠️</span> Skills
+          </li>
+          <li class="nav-item cv-trigger" data-section="idiomas">
+            <span>🌍</span> Lenguajes
+          </li>
+          <li class="nav-item cv-trigger" data-section="proyectos">
+            <span>🚀</span> Proyectos
+          </li>
+          <li class="nav-item cv-trigger" data-section="logros">
+            <span>🏆</span> Logros
+          </li>
+          <li class="nav-item cv-trigger" data-section="voluntariados">
+            <span>🤝</span> Voluntariados
+          </li>
+          <li class="nav-item cv-trigger" data-section="redes">
+            <span>🌐</span> Redes Sociales
+          </li>
+          <li class="nav-item cv-trigger" data-section="hobbies">
+            <span>⚽</span> Intereses / Hobbies
+          </li>
+          <li class="nav-item cv-trigger" data-section="adicional">
+            <span>➕</span> Información adicional
+          </li>
+        </ul>
+
+        <div class="section-title">Historial de chats</div>
+        <ul class="nav-list">
+          <!-- TODO conectarlo a BBDD -->
+          <li
+            class="nav-item history-item history-trigger"
+            data-section="h_retos"
+          >
+            ¿Cuál ha sido tu mayor reto técnico?
+          </li>
+          <li
+            class="nav-item history-item history-trigger"
+            data-section="h_berlin"
+          >
+            Cuéntame más sobre tu año en Berlín
+          </li>
+          <li class="nav-item history-item history-trigger" data-section="h_42">
+            ¿Cómo fue la experiencia en 42 Barcelona?
+          </li>
+          <li
+            class="nav-item history-item history-trigger"
+            data-section="h_padel"
+          >
+            El padel y el trabajo en equipo
+          </li>
+        </ul>
+      </div>
+
+      <div class="user-profile">
+        <div class="user-info">
+          {% if cv.personal_info.foto %}
+          <div class="avatar-circle">
+            <img src="{{cv.personal_info.foto}}" alt="imagen perfil" />
+          </div>
+          {% else %}
+          <div class="avatar-circle">
+            {{cv.personal_info.nombre|slice:":1"}}{{cv.personal_info.apellidos|slice:":1"}}
+          </div>
+          <!-- Problema imagen -->
+          {% endif %}
+          <div class="user-details">
+            <strong
+              >{{cv.personal_info.nombre}}
+              {{cv.personal_info.apellidos}}</strong
+            >
+            <span id="current-section-label"></span>
+          </div>
         </div>
-
-        <button class="new-chat-btn" onclick="location.reload()"><span>✏️</span> Nuevo apartado</button>
-
-        <div class="nav-section">
-            <div class="section-title">Currículum</div>
-            <ul class="nav-list">   <!-- TODO Añadir if para mostrar o no mostrar secciones -->
-                <li class="nav-item cv-trigger" data-section="info_personal"><span>👤</span> Información personal</li>
-                <li class="nav-item cv-trigger" data-section="perfil"><span>🎯</span> Perfil profesional</li>
-                <li class="nav-item cv-trigger" data-section="experiencia"><span>💼</span> Experiencia laboral</li>
-                <li class="nav-item cv-trigger" data-section="educacion"><span>🎓</span> Educación (Reglada)</li>
-                <li class="nav-item cv-trigger" data-section="cursos"><span>📜</span> Educación complementaria</li>
-                <li class="nav-item cv-trigger" data-section="skills"><span>🛠️</span> Skills</li>
-                <li class="nav-item cv-trigger" data-section="idiomas"><span>🌍</span> Lenguajes</li>
-                <li class="nav-item cv-trigger" data-section="proyectos"><span>🚀</span> Proyectos</li>
-                <li class="nav-item cv-trigger" data-section="logros"><span>🏆</span> Logros</li>
-                <li class="nav-item cv-trigger" data-section="voluntariados"><span>🤝</span> Voluntariados</li>
-                <li class="nav-item cv-trigger" data-section="redes"><span>🌐</span> Redes Sociales</li>
-                <li class="nav-item cv-trigger" data-section="hobbies"><span>⚽</span> Intereses / Hobbies</li>
-                <li class="nav-item cv-trigger" data-section="adicional"><span>➕</span> Información adicional</li>
-            </ul>
-
-            <div class="section-title">Historial de chats</div>
-            <ul class="nav-list">      <!-- TODO conectarlo a BBDD -->
-                <li class="nav-item history-item history-trigger" data-section="h_retos">¿Cuál ha sido tu mayor reto
-                    técnico?</li>
-                <li class="nav-item history-item history-trigger" data-section="h_berlin">Cuéntame más sobre tu año en
-                    Berlín</li>
-                <li class="nav-item history-item history-trigger" data-section="h_42">¿Cómo fue la experiencia en 42
-                    Barcelona?</li>
-                <li class="nav-item history-item history-trigger" data-section="h_padel">El padel y el trabajo en equipo
-                </li>
-            </ul>
-        </div>
-
-        <div class="user-profile">
-            <div class="user-info">
-                <div class="avatar-circle">AJ</div>     <!-- TODO if foto perfil -->
-                <div class="user-details">
-                    <strong>Adrián Jiménez Calderón</strong>        <!-- TODO nombre user -->
-                    <span id="current-section-label">sección</span>     <!-- TODO nombre seccion -->
-                </div>
-            </div>
-        </div>
+      </div>
     </aside>
 
     <main class="mainContent">
-        <nav class="topNav">
-            <div class="topNav-left"><button class="mobile-menu-btn" id="open-menu"
-                    title="Abrir menú">☰</button><strong>GcPvT</strong></div>      <!-- TODO cambiar nombre (no se cual) -->
-            <div class="topNav-right"><button class="icon-btn" id="theme-toggle" title="Cambiar tema">🌙</button></div>
-        </nav>
+      <nav class="topNav">
+        <div class="topNav-left">
+          <button class="mobile-menu-btn" id="open-menu" title="Abrir menú">
+            ☰</button
+          ><strong>{{cv.profesional_profile.cv}}</strong>
+        </div>
+        <!-- TODO cambiar nombre (no se cual) -->
+        <div class="topNav-right">
+          <button class="icon-btn" id="theme-toggle" title="Cambiar tema">
+            🌙
+          </button>
+        </div>
+      </nav>
 
-        <section class="centerArea" id="welcomeScreen">
-            <h1 class="welcome-title">¿Qué quieres saber sobre mi perfil?</h1>
-        </section>
+      <section class="centerArea" id="welcomeScreen">
+        <h1 class="welcome-title">¿Qué quieres saber sobre mi perfil?</h1>
+      </section>
 
-        <section class="chat-container" id="chatContainer"></section>
+      <section class="chat-container" id="chatContainer"></section>
 
-        <section class="inputArea">
-            <div class="inputWrapper">
-                <button class="icon-btn" style="font-size: 20px;">＋</button>
-                <input type="text" id="chatInput" placeholder="Pregunta sobre mi experiencia..." readonly>
-                <button class="send-btn" id="sendBtn">➤</button>
-            </div>
-        </section>
+      <section class="inputArea">
+        <div class="inputWrapper">
+          <button class="icon-btn" style="font-size: 20px">＋</button>
+          <input
+            type="text"
+            id="chatInput"
+            placeholder="Pregunta sobre mi experiencia..."
+            readonly
+          />
+          <button class="send-btn" id="sendBtn">➤</button>
+        </div>
+      </section>
     </main>
 
     <!-- TODO añadir variables -->
     <script>
-        // === 1. OBJETO DATOS DEL CURRÍCULUM (MODELOS DE DATOS INCLUIDOS) ===
-        const cvData = {
-            info_personal: {
-                question: `¿Podrías darme tu información personal y datos básicos?`,
-                answer: `¡Hola! Soy Adrián Jiménez Calderón.\n\n• Edad: 29 años\n• Ubicación: Barcelona\n• Teléfono: 601 243 028\n• Email: adrian.jimdev@gmail.com`,
-                dbData: {
-                    nombre: "Adrián", // char *
-                    apellidos: "Jiménez Calderón", // char *
-                    telefono_1: "601243028", // char *
-                    telefono_2: "", // char
-                    email_profesional_1: "adrian.jimdev@gmail.com", // email *
-                    email_profesional_2: "", // email
-                    ciudad: "Barcelona", // char *
-                    pais: "España", // char *
-                    codigo_postal: "", // char
-                    fecha_nacimiento: "1997-01-01", // date (aproximada para 29 años)
-                    nacionalidad: "Española", // char
-                    carnet_de_conducir: false, // booleano
-                    disponibilidad: "Inmediata", // char *
-                    foto: "pato.png" // img
-                }
-            },
-            perfil: {
-                question: `Háblame sobre tu perfil profesional.`,
-                answer: `Mi perfil combina la curiosidad científica con la pasión por la ingeniería y el desarrollo de software.\n\nMi viaje comenzó en la carrera de Física...`,
-                dbData: {
-                    profesion: "Desarrollador de Software / Ingeniero Informático", // char *
-                    objetivo: "Crear soluciones de software eficientes y de alto impacto.", // char
-                    resumen: "Mi perfil combina la curiosidad científica con la pasión por la ingeniería y el desarrollo de software. Mi viaje comenzó en la carrera de Física, donde descubrí la programación. Tras pasar un año intensivo en 42 Barcelona, decidí enfocarme 100% en ello y empezar Ingeniería Informática." // text *
-                }
-            },
-            experiencia: {
-                question: `Cuéntame sobre tu experiencia laboral.`,
-                answer: `He trabajado desde muy joven en diversos sectores:\n\n• Hostelería: Gestión de equipos bajo presión.\n• Logística: Trabajo como mozo.\n• Mantenimiento: Resolución de problemas.`,
-                dbData: [
-                    {
-                        puesto: "Dependiente / Mantenimiento", // char *
-                        empresa: "", // char
-                        ubicacion: "Barcelona", // char
-                        fecha_inicio: null, // date *
-                        fecha_fin: null, // date
-                        trabajo_actual: false, // booleano *
-                        descripcion: "Resolución de problemas prácticos y trato directo con el cliente.", // text
-                        logros: "", // text
-                        orden: 1 // PositiveSmallInt *
-                    },
-                    {
-                        puesto: "Sector Hostelería", // char *
-                        empresa: "", // char
-                        ubicacion: "Barcelona / Berlín", // char
-                        fecha_inicio: null, // date *
-                        fecha_fin: null, // date
-                        trabajo_actual: false, // booleano *
-                        descripcion: "Sector principal. Gestión de equipos y atención al público bajo gran presión.", // text
-                        logros: "Aprendizaje de idiomas (Inglés y Alemán) en entorno real en Berlín.", // text
-                        orden: 2 // PositiveSmallInt *
-                    }
-                ]
-            },
-            educacion: {
-                question: `¿Cuál es tu formación académica reglada?`,
-                answer: `• Grado en Ingeniería Informática - UNIR (En curso).\n• Grado en Física (Pausado).`,
-                dbData: [
-                    {
-                        titulo: "Grado en Ingeniería Informática", // char *
-                        centro: "UNIR", // char
-                        ubicacion: "Online", // char
-                        fecha_inicio: "2023-09-01", // date * (ejemplo)
-                        fecha_fin: null, // date
-                        en_curso: true, // bool *
-                        orden: 1 // PositiveSmallInt *
-                    },
-                    {
-                        titulo: "Grado en Física", // char *
-                        centro: "Universidad de Barcelona (Ejemplo)", // char
-                        ubicacion: "Barcelona", // char
-                        fecha_inicio: "2015-09-01", // date * (ejemplo)
-                        fecha_fin: null, // date
-                        en_curso: false, // bool *
-                        orden: 2 // PositiveSmallInt *
-                    }
-                ]
-            },
-            cursos: {
-                question: `¿Qué formación complementaria o no reglada tienes?`,
-                answer: `• 42 Barcelona: Piscina y año intensivo.\n• FOAP: Programación web, IA y Bases de Datos.`,
-                dbData: [
-                    {
-                        tipo: "Bootcamp / Formación inmersiva", // char *
-                        nombre: "Formación en Programación (Peer-to-peer)", // char *
-                        entidad: "42 Barcelona", // char
-                        fecha: "2022-01-01", // date
-                        descripcion: "Sistema de aprendizaje sin profesores basado 100% en proyectos de código. Piscina superada.", // char
-                        orden: 1 // PositiveSmallInt *
-                    },
-                    {
-                        tipo: "Curso Certificado", // char *
-                        nombre: "FOAP Programación Web, IA y BD", // char *
-                        entidad: "", // char
-                        fecha: null, // date
-                        descripcion: "Formación en programación web, Inteligencia Artificial y gestión de Bases de Datos.", // char
-                        orden: 2 // PositiveSmallInt *
-                    }
-                ]
-            },
-            skills: {
-                question: `¿Cuáles son tus habilidades técnicas principales (Skills)?`,
-                answer: `***REEMPLAZAR POR TUS SKILLS***`,
-                dbData: [
-                    {
-                        tipo: "Hard Skill", // char *
-                        categoria: "Programación", // char
-                        nombre: "C / C++", // char *
-                        nivel: 4, // PositiveSmallInt (Ej 1-5)
-                        orden: 1 // PositiveSmallInt *
-                    },
-                    {
-                        tipo: "Hard Skill", // char *
-                        categoria: "Bases de Datos", // char
-                        nombre: "SQL", // char *
-                        nivel: 3, // PositiveSmallInt
-                        orden: 2 // PositiveSmallInt *
-                    }
-                ]
-            },
-            idiomas: {
-                question: `¿Qué idiomas dominas?`,
-                answer: `• Castellano: Nativo.\n• Catalán: Nativo.\n• Inglés: B1.\n• Alemán: B1.\n• Japonés: N5.`,
-                dbData: [
-                    { idioma: "Castellano", nivel: "Nativo", certificacion: "", orden: 1 }, // idioma*, nivel*, orden*
-                    { idioma: "Catalán", nivel: "Nativo", certificacion: "", orden: 2 },
-                    { idioma: "Inglés", nivel: "B1", certificacion: "", orden: 3 },
-                    { idioma: "Alemán", nivel: "B1", certificacion: "Aprendido en Berlín", orden: 4 },
-                    { idioma: "Japonés", nivel: "N5", certificacion: "", orden: 5 }
-                ]
-            },
-            proyectos: {
-                question: `¿Cuáles han sido tus últimos proyectos?`,
-                answer: `¡Claro! He desarrollado varias aplicaciones. Puedes deslizar hacia los lados para ver mis proyectos destacados:`,
-                // Sustituimos projectsList por la estructura de BD exacta
-                dbData: [
-                    {
-                        nombre: "CV Interactivo ChatGPT", // char *
-                        descripcion: "Desarrollo de mi currículum vitae en formato web simulando la interfaz de una IA.", // text
-                        tecnologias: "HTML, CSS, JS Vanilla", // char
-                        link: "https://tudominio.com", // URL
-                        orden: 1 // PositiveSmallInt *
-                    },
-                    {
-                        nombre: "Minishell", // char *
-                        descripcion: "Recreación de un intérprete de comandos básico. Implementación de parseo y procesos.", // text
-                        tecnologias: "C, Unix", // char
-                        link: "", // URL
-                        orden: 2 // PositiveSmallInt *
-                    }
-                ]
-            },
-            logros: {
-                question: `¿Puedes destacar algún logro importante?`,
-                answer: `***REEMPLAZAR POR TUS LOGROS***`,
-                dbData: [
-                    {
-                        titulo: "Superación Piscina 42", // char *
-                        tipo: "Académico / Técnico", // char *
-                        descripcion: "Superé con éxito la piscina de 42 Barcelona, 26 días de inmersión total en código C.", // text
-                        fecha: "2022-08-01", // date
-                        orden: 1 // PositiveSmallInt *
-                    }
-                ]
-            },
-            voluntariados: {
-                question: `¿Tienes experiencia en voluntariados?`,
-                answer: `***REEMPLAZAR POR VOLUNTARIADOS***`,
-                dbData: [
-                    {
-                        organizacion: "Nombre ONG", // char *
-                        funcion: "Rol", // char *
-                        impacto: "Descripción del impacto", // text
-                        fecha_inicio: null, // date
-                        fecha_fin: null, // date
-                        en_curso: false, // booleano *
-                        orden: 1 // PositiveSmallInt *
-                    }
-                ]
-            },
-            redes: {
-                question: `¿Dónde puedo encontrar tus redes sociales profesionales?`,
-                answer: `🔗 LinkedIn: [www.linkedin.com/in/ajimenez-dev](https://www.linkedin.com/in/ajimenez-dev)`,
-                dbData: {
-                    linkedin: "https://www.linkedin.com/in/ajimenez-dev", // URL
-                    github: "https://github.com/tu-usuario", // URL
-                    portfolio: "", // URL
-                    twitter: "", // URL
-                    otras: "" // char
-                }
-            },
-            hobbies: {
-                question: `¿Cuáles son tus intereses y hobbies fuera del trabajo?`,
-                answer: `El deporte siempre ha sido fundamental en mi vida. Me crié jugando a fútbol y llevo años compitiendo a pádel.`,
-                dbData: [
-                    { nombre: "Pádel (Competición y afición)", orden: 1 }, // nombre*, orden*
-                    { nombre: "Fútbol", orden: 2 },
-                    { nombre: "Cursas individuales / Running", orden: 3 },
-                    { nombre: "Idiomas y viajes (Ej. Berlín)", orden: 4 }
-                ]
-            },
-            adicional: {
-                question: `¿Hay alguna información adicional que debamos saber?`,
-                answer: `***REEMPLAZAR***`,
-                dbData: {
-                    disponibilidad_para_viajar: true, // booleano *
-                    teletrabajo: "Híbrido / Remoto", // char *
-                    expectativa_salarial: "", // char
-                    notas: "" // text
-                }
-            }
-        };
+      // === 1. OBJETO DATOS DEL CURRÍCULUM (MODELOS DE DATOS INCLUIDOS) ===
+      const cvData = {
+        info_personal: {
+          question: `¿Podrías darme tu información personal y datos básicos?`,
+          answer: `¡Hola! Soy {{cv.personal_info.nombre}} {{cv.personal_info.apellidos}} estos son mis datos:
+                {% if cv.personal_info.fecha_nacimiento %}
+                • <strong>Fecha nacimiento:</strong> {{cv.personal_info.fecha_nacimiento}} {% endif %}
+                • <strong>Ubicación:</strong> {{cv.personal_info.ciudad}}, {{cv.personal_info.pais}}{% if cv.personal_info.codigo_postal%}, {{cv.personal_info.codigo_postal}}{% endif %}
+                • <strong>Teléfono:</strong> {{cv.personal_info.telefono1}} {% if cv.personal_info.telefono2 %}
+                • <strong>Telefono 2:</strong> {{cv.personal_info.telefono2}} {% endif %}
+                • <strong>Email:</strong> {{cv.personal_info.email_profesional1}} {% if cv.personal_info.email_profesional2 %}
+                • <strong>Email 2:</strong> {{cv.personal_info.email_profesional2}} {% endif %} {% if cv.personal_info.nacionalidad %}
+                • <strong>Nacionalidad:</strong> {{cv.personal_info.nacionalidad}} {% endif %} {% if cv.personal_info.carnet_conducir is not None %}
+                • <strong>Carnet de conducir:</strong> {{ cv.personal_info.carnet_conducir|yesno:"Si,No" }} {% endif %}
+                • <strong>Disponibilidad:</strong> {{cv.personal_info.disponibilidad}}
+                `,
+        },
+        perfil: {
+          question: `Háblame sobre tu perfil profesional.`,
+          answer: `Soy {{cv.professional_profile.profesion}}
+                {% if cv.professional_profile.objetivo %}
+                • <strong>Objetivo:</strong> {{cv.professional_profile.objetivo}}{% endif %}
+                
+                • <strong>Resumen:</strong> {{cv.professional_profile.resumen}}`,
+        },
+        experiencia: {
+          question: `Cuéntame sobre tu experiencia laboral.`,
+          answer: `{% for experiencia in cv.work_experience %} • <strong>Puesto: {{experiencia.puesto}}</strong>
+                {% if experiencia.empresa %} empresa -> {{experiencia.empresa}}{% endif %}
+                {% if experiencia.ubicacion %} ubicación -> {{experiencia.ubicacion}} {% endif %}
+                fecha inicio -> {{experiencia.fecha_inicio}}
+                {% if experiencia.fecha_fin %} fecha fin -> {{experiencia.fecha_fin}} {% endif %}
+                Trabajo actual -> {{experiencia.trabajo_actual|yesno:"Si,No"}}
+                {% if experiencia.descripcion %} Descripción -> {{experiencia.descripcion}} {% endif %}
+                {% if experiencia.logros %} Logros -> {{experiencia.logros}} {% endif %}
+                {% endfor %}
 
-        const historyData = {
-            h_retos: { question: `¿Cuál ha sido tu mayor reto técnico?`, answer: `Mi mayor reto fue el año en **42 Barcelona**...` },
-            h_berlin: { question: `Cuéntame más sobre tu año en Berlín`, answer: `Vivir en Berlín a los 20 años fue un punto de inflexión...` },
-            h_42: { question: `¿Cómo fue la experiencia en 42 Barcelona?`, answer: `Fue increíble. Descubrí que me encanta picar código...` },
-            h_padel: { question: `El padel y el trabajo en equipo`, answer: `Llevo años compitiendo en padel...` }
-        };
+                `,
+        },
+        educacion: {
+          question: `¿Cuál es tu formación académica reglada?`,
+          answer: `{% for estudio in cv.education %}
+          • <strong> Titulo: {{estudio.titulo}} </strong>
+          {% if estudio.centro %} Centro -> {{estudio.centro}} {% endif %}
+          {% if estudio.ubicacion %} Centro -> {{estudio.ubicacion}} {% endif %}
+          Fecha inicio -> {{estudio.fecha_inicio}}
+          {% if estudio.fecha_fin %} Fecha fin -> {{estudio.fecha_fin}} {% endif %}
+          En curso: {{estudio.en_curso|yesno:"Si,No"}}
+          {% endfor %}
+          `,
+        },
+        cursos: {
+          question: `¿Qué formación complementaria o no reglada tienes?`,
+          answer: `{% for curso in cv.complementary_training %}
+          • <strong>Tipo: {{curso.tipo}} | {{curso.nombre}}</strong>
+          {% if curso.entidad %} Entidad -> {{curso.entidad}} {% endif %}
+          {% if curso.fecha %} Fecha -> {{curso.fecha}} {% endif %}
+          {% if curso.descripcion %} Descripcion -> {{curso.descripcion}} {% endif %}
+          {% endfor %}
+          `,
+        },
+        skills: {
+          question: `¿Cuáles son tus habilidades técnicas principales (Skills)?`,
+          answer: `{% for skill in cv.skills %}
+          •<strong>Tipo: {{skill.tipo}} | {{skill.nombre}} </strong>
+          {% if skill.categoria %} Categoria -> {{skill.categoria}} {% endif %}
+          {% if skill.nivel %} Nivel -> {{skill.nivel}} {% endif %}
 
-        // LÓGICA DE LA INTERFAZ
-        const welcomeScreen = document.getElementById('welcomeScreen');
-        const chatContainer = document.getElementById('chatContainer');
-        const chatInput = document.getElementById('chatInput');
-        const currentSectionLabel = document.getElementById('current-section-label');
-        let isTyping = false;
+          {% endfor %}
+          `,
+        },
+        idiomas: {
+          question: `¿Qué idiomas dominas?`,
+          answer: `{% for idioma in cv.languages %}
+          •<strong>{{idioma.idioma}}</strong> | {{idioma.nivel}}
+          {% if idioma.certificacion %} Certificación -> {{idioma.certificacion}} {% endif %}
 
-        const themeToggleBtn = document.getElementById('theme-toggle');
-        themeToggleBtn.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-            themeToggleBtn.innerText = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
-        });
+          {% endfor %}`,
+        },
+        // Terminar lo último
+        proyectos: {
+          question: `¿Cuáles han sido tus últimos proyectos?`,
+          answer: `¡Claro! He desarrollado varias aplicaciones. Puedes deslizar hacia los lados para ver mis proyectos destacados:`,
+          dbData: [
+            {% for proyecto in cv.projects %}
+            {
+              nombre: "{{ proyecto.nombre|escapejs }}",
+              descripcion: "{% if proyecto.descripcion %}{{proyecto.descripcion}}{% endif %}",
+              tecnologias: "{% if proyecto.tecnologias %}{{proyecto.tecnologias}}{% endif %}",
+              link: "{% if proyecto.link %}{{proyecto.link}}{% endif %}"
+            },
+            {% endfor %}
+          ]
+        },
+        logros: {
+          question: `¿Puedes destacar algún logro importante?`,
+          answer: `{% for logro in cv.achievements %}
+          • <strong>{{logro.titulo}} </strong>| {{logro.tipo}}
+          {% if logro.descripcion %} Descripción -> {{logro.descripcion}} {% endif %}
+          {% if logro.fecha %} Fecha -> {{logro.fecha}} {% endif %}
+          {% endfor %}`,
+        },
+        voluntariados: {
+          question: `¿Tienes experiencia en voluntariados?`,
+          answer: `{% for voluntariado in cv.volunteering %}
+          •<strong>{{voluntariado.funcion}} | {{voluntariado.organizacion}} </strong>
+          {% if voluntariado.impacto %} Impacto -> {{voluntariado.impacto}} {% endif %}
+          {% if voluntariado.fecha_inicio %} Fecha inicio -> {{voluntariado.fecha_inicio}} {% endif %}
+          {% if voluntariado.fecha_fin %} Fecha fin -> {{voluntariado.fecha_fin}} {% endif %}
+          En curso -> {{voluntariado.en_curso|yesno:"Si,No"}}
+          {% endfor %}`,
+        },
+        redes: {
+          question: `¿Dónde puedo encontrar tus redes sociales profesionales?`,
+          answer: `{% if cv.social_network.linkedin %}• Linkedin: {{cv.social_network.linkedin}}{% endif %}
+          {% if cv.social_network.github %}• github: {{cv.social_network.github}}{% endif %}
+          {% if cv.social_network.portfolio %}• portfolio: {{cv.social_network.portfolio}}{% endif %}
+          {% if cv.social_network.twitter %}• twitter: {{cv.social_network.twitter}}{% endif %}
+          {% if cv.social_network.otras %}• otras: {{cv.social_network.otras}}{% endif %}
+          `,
+        },
+        hobbies: {
+          question: `¿Cuáles son tus intereses y hobbies fuera del trabajo?`,
+          answer: `Estos son mis hobbies:{% for interes in cv.interests %}
+          • <strong>{{interes.nombre}}</strong>
+          {% endfor %}`,
+        },
+        adicional: {
+          question: `¿Hay alguna información adicional que debamos saber?`,
+          answer: `• Disponibilidad para viajar: {{cv.other_info.disponibilidad_viajar|yesno:"Si,No"}}
+          • Teletrabajo: {{cv.other_info.teletrabajo}}
+          {% if cv.other_info.expectativa_salarial %} • Expectativa salarial: {{cv.other_info.expectativa_salarial}}{% endif %}
+          {% if cv.other_info.notas %} • Notas: {{cv.other_info.notas}} {% endif %}`,
+        },
+      };
 
-        function setActiveItem(clickedItem) {
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            clickedItem.classList.add('active');
-            let textoLimpio = clickedItem.innerText.replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[\u2600-\u27FF]|\s+/g, ' ').trim();
-            currentSectionLabel.innerText = textoLimpio;
-        }
+      const historyData = {
+        h_retos: {
+          question: `¿Cuál ha sido tu mayor reto técnico?`,
+          answer: `Mi mayor reto fue el año en **42 Barcelona**...`,
+        },
+        h_berlin: {
+          question: `Cuéntame más sobre tu año en Berlín`,
+          answer: `Vivir en Berlín a los 20 años fue un punto de inflexión...`,
+        },
+        h_42: {
+          question: `¿Cómo fue la experiencia en 42 Barcelona?`,
+          answer: `Fue increíble. Descubrí que me encanta picar código...`,
+        },
+        h_padel: {
+          question: `El padel y el trabajo en equipo`,
+          answer: `Llevo años compitiendo en padel...`,
+        },
+      };
 
-        function appendMessage(sender, text) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `chat-message ${sender}`;
-            messageDiv.innerHTML = sender === 'user' ?
-                `<div class="bubble">${text}</div>` :
-                `<div class="avatar-circle">AJ</div><div><strong>GcPvT</strong><p>${text}</p></div>`;
-            chatContainer.appendChild(messageDiv);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
+      // LÓGICA DE LA INTERFAZ
+      const welcomeScreen = document.getElementById("welcomeScreen");
+      const chatContainer = document.getElementById("chatContainer");
+      const chatInput = document.getElementById("chatInput");
+      const currentSectionLabel = document.getElementById(
+        "current-section-label",
+      );
+      let isTyping = false;
 
-        function appendCarousel(projects) {
-            const wrapperDiv = document.createElement('div');
-            wrapperDiv.className = 'carousel-wrapper';
-            const carouselDiv = document.createElement('div');
-            carouselDiv.className = 'carousel-container';
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      themeToggleBtn.addEventListener("click", () => {
+        document.body.classList.toggle("dark-mode");
+        themeToggleBtn.innerText = document.body.classList.contains("dark-mode")
+          ? "☀️"
+          : "🌙";
+      });
 
-            projects.forEach(proj => {
-                const card = document.createElement('div');
-                card.className = 'project-card';
-                // Adaptado a las nuevas variables de bdData (nombre, descripcion, tecnologias)
-                card.innerHTML = `
+      function setActiveItem(clickedItem) {
+        document
+          .querySelectorAll(".nav-item")
+          .forEach((el) => el.classList.remove("active"));
+        clickedItem.classList.add("active");
+        let textoLimpio = clickedItem.innerText
+          .replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[\u2600-\u27FF]|\s+/g, " ")
+          .trim();
+        currentSectionLabel.innerText = textoLimpio;
+      }
+
+      function appendMessage(sender, text) {
+        const messageDiv = document.createElement("div");
+        messageDiv.className = `chat-message ${sender}`;
+        messageDiv.innerHTML =
+          sender === "user"
+            ? `<div class="bubble">${text}</div>` : 
+              `<div class="avatar-circle">{{cv.personal_info.nombre | slice:":1"}}{{cv.personal_info.apellidos | slice:":1"}}</div><div><strong>{{cv.personal_info.nombre}}</strong><p>${text}</p></div>`;
+        chatContainer.appendChild(messageDiv);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+      }
+
+      function appendCarousel(projects) {
+        const wrapperDiv = document.createElement("div");
+        wrapperDiv.className = "carousel-wrapper";
+        const carouselDiv = document.createElement("div");
+        carouselDiv.className = "carousel-container";
+
+        projects.forEach((proj) => {
+          const card = document.createElement("div");
+          card.className = "project-card";
+          
+          // Creamos el HTML dinámicamente. Si hay link, añadimos una etiqueta <a>
+          card.innerHTML = `
                     <div class="project-title">${proj.nombre}</div>
                     <div class="project-desc">${proj.descripcion}</div>
+                    ${proj.link ? `<a href="${proj.link}" target="_blank" style="font-size: 13px; color: var(--bg-button-dark); text-decoration: none; font-weight: 600; margin-top: 5px;">Ver proyecto ➔</a>` : ''}
                     <div class="project-tech">${proj.tecnologias}</div>
                 `;
-                carouselDiv.appendChild(card);
-            });
+          carouselDiv.appendChild(card);
+        });
 
-            wrapperDiv.appendChild(carouselDiv);
-            chatContainer.appendChild(wrapperDiv);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
+        wrapperDiv.appendChild(carouselDiv);
+        chatContainer.appendChild(wrapperDiv);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+      }
+
+      function escribirTexto(data, delay = 40) {
+        let i = 0;
+        let textoPregunta = data.question;
+        let textoRespuesta = data.answer;
+
+        welcomeScreen.style.display = "none";
+        chatContainer.style.display = "flex";
+        chatContainer.innerHTML = "";
+        chatInput.value = "";
+
+        function escribir() {
+          if (i < textoPregunta.length) {
+            chatInput.value += textoPregunta[i];
+            i++;
+            setTimeout(escribir, delay);
+          } else {
+            setTimeout(() => {
+              chatInput.value = "";
+              appendMessage("user", textoPregunta);
+              setTimeout(() => {
+                appendMessage("ai", textoRespuesta);
+
+                // Comprobamos si el dbData es el array de proyectos
+                if (
+                  data.dbData &&
+                  Array.isArray(data.dbData) &&
+                  data.dbData.length > 0 &&
+                  data.dbData[0].tecnologias !== undefined
+                ) {
+                  appendCarousel(data.dbData);
+                }
+
+                isTyping = false;
+              }, 800);
+            }, 500);
+          }
         }
+        escribir();
+      }
 
-        function escribirTexto(data, delay = 40) {
-            let i = 0;
-            let textoPregunta = data.question;
-            let textoRespuesta = data.answer;
+      document.querySelectorAll(".cv-trigger").forEach((item) => {
+        item.addEventListener("click", function () {
+          if (isTyping) return;
+          isTyping = true;
+          setActiveItem(this);
+          const section = this.getAttribute("data-section");
+          const data = cvData[section];
+          if (data) escribirTexto(data);
+        });
+      });
 
-            welcomeScreen.style.display = 'none';
-            chatContainer.style.display = 'flex';
-            chatContainer.innerHTML = '';
-            chatInput.value = '';
+      document.querySelectorAll(".history-trigger").forEach((item) => {
+        item.addEventListener("click", function () {
+          if (isTyping) return;
+          setActiveItem(this);
+          const section = this.getAttribute("data-section");
+          const data = historyData[section];
+          if (data) {
+            welcomeScreen.style.display = "none";
+            chatContainer.style.display = "flex";
+            chatContainer.innerHTML = "";
+            appendMessage("user", data.question);
+            appendMessage("ai", data.answer);
+          }
+        });
+      });
 
-            function escribir() {
-                if (i < textoPregunta.length) {
-                    chatInput.value += textoPregunta[i];
-                    i++;
-                    setTimeout(escribir, delay);
-                } else {
-                    setTimeout(() => {
-                        chatInput.value = '';
-                        appendMessage('user', textoPregunta);
-                        setTimeout(() => {
-                            appendMessage('ai', textoRespuesta);
+      document.getElementById("logo-btn").addEventListener("click", () => {
+        if (isTyping) return;
+        welcomeScreen.style.display = "flex";
+        chatContainer.style.display = "none";
+        chatContainer.innerHTML = "";
+        chatInput.value = "";
+        currentSectionLabel.innerText = "sección";
+        document
+          .querySelectorAll(".nav-item")
+          .forEach((el) => el.classList.remove("active"));
+      });
 
-                            // Comprobamos si el dbData es el array de proyectos
-                            if (data.dbData && Array.isArray(data.dbData) && data.dbData.length > 0 && data.dbData[0].tecnologias !== undefined) {
-                                appendCarousel(data.dbData);
-                            }
+      const sideBar = document.getElementById("sideBar");
+      const openMenuBtn = document.getElementById("open-menu");
+      const closeMenuBtn = document.getElementById("close-menu");
 
-                            isTyping = false;
-                        }, 800);
-                    }, 500);
-                }
-            }
-            escribir();
+      openMenuBtn.addEventListener("click", () => {
+        if (window.innerWidth <= 1024) {
+          sideBar.classList.add("show");
+        } else {
+          document.body.classList.remove("sidebar-closed");
         }
+      });
 
-        document.querySelectorAll('.cv-trigger').forEach(item => {
-            item.addEventListener('click', function () {
-                if (isTyping) return;
-                isTyping = true;
-                setActiveItem(this);
-                const section = this.getAttribute('data-section');
-                const data = cvData[section];
-                if (data) escribirTexto(data);
-            });
+      closeMenuBtn.addEventListener("click", () => {
+        if (window.innerWidth <= 1024) {
+          sideBar.classList.remove("show");
+        } else {
+          document.body.classList.add("sidebar-closed");
+        }
+      });
+
+      document.querySelectorAll(".nav-item").forEach((item) => {
+        item.addEventListener("click", () => {
+          if (window.innerWidth <= 1024) {
+            sideBar.classList.remove("show");
+          }
         });
-
-        document.querySelectorAll('.history-trigger').forEach(item => {
-            item.addEventListener('click', function () {
-                if (isTyping) return;
-                setActiveItem(this);
-                const section = this.getAttribute('data-section');
-                const data = historyData[section];
-                if (data) {
-                    welcomeScreen.style.display = 'none';
-                    chatContainer.style.display = 'flex';
-                    chatContainer.innerHTML = '';
-                    appendMessage('user', data.question);
-                    appendMessage('ai', data.answer);
-                }
-            });
-        });
-
-        document.getElementById('logo-btn').addEventListener('click', () => {
-            if (isTyping) return;
-            welcomeScreen.style.display = 'flex';
-            chatContainer.style.display = 'none';
-            chatContainer.innerHTML = '';
-            chatInput.value = '';
-            currentSectionLabel.innerText = 'sección';
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-        });
-
-        const sideBar = document.getElementById('sideBar');
-        const openMenuBtn = document.getElementById('open-menu');
-        const closeMenuBtn = document.getElementById('close-menu');
-
-        openMenuBtn.addEventListener('click', () => {
-            if (window.innerWidth <= 1024) {
-                sideBar.classList.add('show');
-            } else {
-                document.body.classList.remove('sidebar-closed');
-            }
-        });
-
-        closeMenuBtn.addEventListener('click', () => {
-            if (window.innerWidth <= 1024) {
-                sideBar.classList.remove('show');
-            } else {
-                document.body.classList.add('sidebar-closed');
-            }
-        });
-
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('click', () => {
-                if (window.innerWidth <= 1024) {
-                    sideBar.classList.remove('show');
-                }
-            });
-        });
-
+      });
     </script>
-</body>
-
+  </body>
 </html>
