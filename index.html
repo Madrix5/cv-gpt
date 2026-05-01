@@ -962,12 +962,12 @@
           question: `¿Cuáles son tus habilidades técnicas principales (Skills)?`,
           answer: `¡Claro! Aquí tienes mis habilidades divididas por tipo:
           
-          <strong>🛠️ Hard Skills</strong>{% for skill in cv.skills %}{% if skill.tipo == 'Tecnica' %}
+          <strong>🛠️ Hard Skills</strong>{% for skill in profile.cv.skills.all %}{% if skill.tipo == 'Tecnica' %}
           • <strong>{{skill.nombre}} </strong>
           {% if skill.categoria %}Categoria -> {{skill.categoria}} {% endif %}
           {% if skill.nivel %}Nivel -> {% if skill.nivel == 1 %}★☆☆☆☆{% elif skill.nivel == 2 %}★★☆☆☆{% elif skill.nivel == 3 %}★★★☆☆{% elif skill.nivel == 4 %}★★★★☆{% elif skill.nivel == 5 %}★★★★★{% endif %}{% endif %}{% endif %}{% endfor %}
 
-          <br><strong>🤝 Soft Skills</strong>{% for skill in cv.skills %}{% if skill.tipo == 'SoftSkill' %}
+          <br><strong>🤝 Soft Skills</strong>{% for skill in profile.cv.skills.all %}{% if skill.tipo == 'SoftSkill' %}
           • <strong>{{skill.nombre}} </strong>
           {% if skill.categoria %}Categoria -> {{skill.categoria}} {% endif %}
           {% if skill.nivel %}Nivel -> {% if skill.nivel == 1 %}★☆☆☆☆{% elif skill.nivel == 2 %}★★☆☆☆{% elif skill.nivel == 3 %}★★★☆☆{% elif skill.nivel == 4 %}★★★★☆{% elif skill.nivel == 5 %}★★★★★{% endif %}{% endif %}{% endif %}{% endfor %}
