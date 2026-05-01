@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
-      CV | {{cv.personal_info.nombre}} {{cv.personal_info.apellidos}}
+      CV | {{profile.cv.personal_info.nombre}} {{profile.cv.personal_info.apellidos}}
     </title>
     <style>
       /* =========================================
@@ -459,6 +459,100 @@
         transition: background-color 0.3s ease;
       }
 
+      /* === VISTA DEL FORMULARIO DE CONTACTO === */
+      .contact-section {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        overflow-y: auto;
+      }
+      
+      .main-contact-form {
+        display: flex;
+        flex-direction: column;
+        gap: 18px; 
+        width: 100%;
+        max-width: 650px; 
+        background-color: var(--bg-input);
+        padding: 40px; 
+        border-radius: 12px;
+        border: 1px solid var(--border-light);
+      }
+      
+      .input-wrapper-contact {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .contact-input {
+        width: 100%;
+        padding: 15px; 
+        border-radius: 8px;
+        border: 1px solid var(--border-light);
+        background-color: var(--bg-main);
+        color: var(--text-primary);
+        font-size: 16px; 
+        font-family: inherit;
+        outline: none;
+        transition: border-color 0.3s ease;
+      }
+      
+      .contact-input:focus {
+        border-color: var(--bg-button-dark);
+      }
+
+      /* Clases de validación */
+      .contact-input.input-error {
+        border-color: #ff4d4f;
+      }
+      
+      .contact-input.input-success {
+        border-color: #52c41a; 
+      }
+
+      .error-msg {
+        color: #ff4d4f;
+        font-size: 13px;
+        display: none;
+        margin-left: 5px;
+      }
+      
+      textarea.contact-input {
+        min-height: 160px; 
+        resize: vertical;
+      }
+      
+      .contact-btn {
+        background-color: var(--bg-button-dark);
+        color: var(--text-button-light);
+        padding: 15px; 
+        font-size: 16px; 
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.1s ease;
+        margin-top: 5px;
+      }
+      
+      .contact-btn:active {
+        transform: scale(0.98);
+      }
+
+      /* Animación para los campos dinámicos */
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-5px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      
+      .dynamic-field {
+        animation: fadeIn 0.3s ease forwards;
+      }
+
       /* RESPONSIVE */
       @media (max-width: 1024px) and (min-width: 769px) {
         .sideBar {
@@ -520,6 +614,10 @@
           padding-left: 10px;
           padding-right: 10px;
         }
+        
+        .main-contact-form {
+          padding: 25px; 
+        }
       }
     </style>
   </head>
@@ -533,14 +631,17 @@
         <button class="icon-btn" id="close-menu" title="Cerrar menú">☰</button>
       </div>
 
-      <button class="new-chat-btn" onclick="location.reload()">
+      <button class="new-chat-btn" id="btn-new-chat">
         <span>✏️</span> Nuevo apartado
+      </button>
+
+      <button class="new-chat-btn" id="btn-contact-view" style="margin-top: -5px;">
+        <span>📬</span> Contáctame
       </button>
 
       <div class="nav-section">
         <div class="section-title">Currículum</div>
         <ul class="nav-list">
-          <!-- TODO Añadir if para mostrar o no mostrar secciones -->
           <li class="nav-item cv-trigger" data-section="info_personal">
             <span>👤</span> Información personal
           </li>
@@ -584,26 +685,16 @@
 
         <div class="section-title">Historial de chats</div>
         <ul class="nav-list">
-          <!-- TODO conectarlo a BBDD -->
-          <li
-            class="nav-item history-item history-trigger"
-            data-section="h_retos"
-          >
+          <li class="nav-item history-item history-trigger" data-section="h_retos">
             ¿Cuál ha sido tu mayor reto técnico?
           </li>
-          <li
-            class="nav-item history-item history-trigger"
-            data-section="h_berlin"
-          >
+          <li class="nav-item history-item history-trigger" data-section="h_berlin">
             Cuéntame más sobre tu año en Berlín
           </li>
           <li class="nav-item history-item history-trigger" data-section="h_42">
             ¿Cómo fue la experiencia en 42 Barcelona?
           </li>
-          <li
-            class="nav-item history-item history-trigger"
-            data-section="h_padel"
-          >
+          <li class="nav-item history-item history-trigger" data-section="h_padel">
             El padel y el trabajo en equipo
           </li>
         </ul>
@@ -611,21 +702,17 @@
 
       <div class="user-profile">
         <div class="user-info">
-          {% if cv.personal_info.foto %}
+          {% if profile.cv.personal_info.foto %}
           <div class="avatar-circle">
-            <img src="{{cv.personal_info.foto}}" alt="imagen perfil" />
+            <img src="{{profile.cv.personal_info.foto}}" alt="imagen perfil" />
           </div>
           {% else %}
           <div class="avatar-circle">
-            {{cv.personal_info.nombre|slice:":1"}}{{cv.personal_info.apellidos|slice:":1"}}
+            {{profile.cv.personal_info.nombre|slice:":1"}}{{profile.cv.personal_info.apellidos|slice:":1"}}
           </div>
-          <!-- Problema imagen -->
           {% endif %}
           <div class="user-details">
-            <strong
-              >{{cv.personal_info.nombre}}
-              {{cv.personal_info.apellidos}}</strong
-            >
+            <strong>{{profile.cv.personal_info.nombre}} {{profile.cv.personal_info.apellidos}}</strong>
             <span id="current-section-label"></span>
           </div>
         </div>
@@ -635,15 +722,11 @@
     <main class="mainContent">
       <nav class="topNav">
         <div class="topNav-left">
-          <button class="mobile-menu-btn" id="open-menu" title="Abrir menú">
-            ☰</button
-          ><strong>{{cv.profesional_profile.cv}}</strong>
+          <button class="mobile-menu-btn" id="open-menu" title="Abrir menú">☰</button>
+          <strong>{{profile.cv.profesional_profile.cv}}</strong>
         </div>
-        <!-- TODO cambiar nombre (no se cual) -->
         <div class="topNav-right">
-          <button class="icon-btn" id="theme-toggle" title="Cambiar tema">
-            🌙
-          </button>
+          <button class="icon-btn" id="theme-toggle" title="Cambiar tema">🌙</button>
         </div>
       </nav>
 
@@ -653,50 +736,92 @@
 
       <section class="chat-container" id="chatContainer"></section>
 
-      <section class="inputArea">
+      <section class="contact-section" id="contactSection" style="display: none;">
+        <h2 style="margin-bottom: 10px; font-weight: 500; font-size: 28px;">Formulario de contacto</h2>
+        <form class="main-contact-form" id="mainContactForm">
+          
+          <div class="input-wrapper-contact">
+            <select class="contact-input" id="frm_tipo" name="tipo_contacto">
+              <option value="" disabled selected>¿Particular o Empresa?</option>
+              <option value="particular">Soy un particular</option>
+              <option value="empresa">Soy una empresa</option>
+            </select>
+            <span class="error-msg" id="err_tipo">Por favor, selecciona una opción.</span>
+          </div>
+
+          <div class="input-wrapper-contact">
+            <input type="text" class="contact-input" id="frm_nombre" name="nombre" placeholder="Tu nombre / Persona de contacto">
+            <span class="error-msg" id="err_nombre">Ingresa un nombre válido (mín. 2 letras, solo letras y espacios).</span>
+          </div>
+
+          <!-- NUEVOS CAMPOS (EMPRESA Y CARGO) -->
+          <div class="input-wrapper-contact dynamic-field" id="wrap_empresa_nombre" style="display: none;">
+            <input type="text" class="contact-input" id="frm_empresa_nombre" name="empresa_nombre" placeholder="Nombre de la empresa">
+            <span class="error-msg" id="err_empresa_nombre">Ingresa un nombre de empresa válido.</span>
+          </div>
+
+          <div class="input-wrapper-contact dynamic-field" id="wrap_empresa_cargo" style="display: none;">
+            <input type="text" class="contact-input" id="frm_empresa_cargo" name="empresa_cargo" placeholder="Tu cargo (Ej: RRHH, Tech Lead...)">
+            <span class="error-msg" id="err_empresa_cargo">Ingresa un cargo válido (mín. 2 letras).</span>
+          </div>
+          <!-- FIN NUEVOS CAMPOS -->
+
+          <div class="input-wrapper-contact">
+            <input type="text" inputmode="email" class="contact-input" id="frm_email" name="email" placeholder="Tu correo electrónico">
+            <span class="error-msg" id="err_email">Ingresa un correo electrónico válido (ej: nombre@dominio.com).</span>
+          </div>
+
+          <div class="input-wrapper-contact">
+            <textarea class="contact-input" id="frm_mensaje" name="mensaje" placeholder="¿En qué te puedo ayudar?"></textarea>
+            <span class="error-msg" id="err_mensaje">El mensaje debe tener al menos 10 caracteres.</span>
+          </div>
+
+          <button type="submit" class="contact-btn">Enviar mensaje</button>
+        </form>
+      </section>
+
+      <section class="inputArea" id="inputArea">
         <div class="inputWrapper">
           <button class="icon-btn" style="font-size: 20px">＋</button>
           <input
             type="text"
             id="chatInput"
             placeholder="Pregunta sobre mi experiencia..."
-            readonly
           />
           <button class="send-btn" id="sendBtn">➤</button>
         </div>
       </section>
     </main>
 
-    <!-- TODO añadir variables -->
     <script>
-      // === 1. OBJETO DATOS DEL CURRÍCULUM (MODELOS DE DATOS INCLUIDOS) ===
+      // === 1. OBJETO DATOS DEL CURRÍCULUM ===
       const cvData = {
         info_personal: {
           question: `¿Podrías darme tu información personal y datos básicos?`,
-          answer: `¡Hola! Soy {{cv.personal_info.nombre}} {{cv.personal_info.apellidos}} estos son mis datos:
-                {% if cv.personal_info.fecha_nacimiento %}
-                • <strong>Fecha nacimiento:</strong> {{cv.personal_info.fecha_nacimiento}} {% endif %}
-                • <strong>Ubicación:</strong> {{cv.personal_info.ciudad}}, {{cv.personal_info.pais}}{% if cv.personal_info.codigo_postal%}, {{cv.personal_info.codigo_postal}}{% endif %}
-                • <strong>Teléfono:</strong> {{cv.personal_info.telefono1}} {% if cv.personal_info.telefono2 %}
-                • <strong>Telefono 2:</strong> {{cv.personal_info.telefono2}} {% endif %}
-                • <strong>Email:</strong> {{cv.personal_info.email_profesional1}} {% if cv.personal_info.email_profesional2 %}
-                • <strong>Email 2:</strong> {{cv.personal_info.email_profesional2}} {% endif %} {% if cv.personal_info.nacionalidad %}
-                • <strong>Nacionalidad:</strong> {{cv.personal_info.nacionalidad}} {% endif %} {% if cv.personal_info.carnet_conducir is not None %}
-                • <strong>Carnet de conducir:</strong> {{ cv.personal_info.carnet_conducir|yesno:"Si,No" }} {% endif %}
-                • <strong>Disponibilidad:</strong> {{cv.personal_info.disponibilidad}}
+          answer: `¡Hola! Soy {{profile.cv.personal_info.nombre}} {{profile.cv.personal_info.apellidos}} estos son mis datos:
+                {% if profile.cv.personal_info.fecha_nacimiento %}
+                • <strong>📅Fecha nacimiento:</strong> {{profile.cv.personal_info.fecha_nacimiento}} {% endif %}
+                • <strong>📍Ubicación:</strong> {{profile.cv.personal_info.ciudad}}, {{profile.cv.personal_info.pais}}{% if profile.cv.personal_info.codigo_postal%}, {{cv.personal_info.codigo_postal}}{% endif %}
+                • <strong>📱Teléfono:</strong> {{profile.cv.personal_info.telefono1}} {% if profile.cv.personal_info.telefono2 %}
+                • <strong>📞Telefono 2:</strong> {{profile.cv.personal_info.telefono2}} {% endif %}
+                • <strong>✉️Email:</strong> {{profile.cv.personal_info.email_profesional1}} {% if profile.cv.personal_info.email_profesional2 %}
+                • <strong>✉️Email 2:</strong> {{profile.cv.personal_info.email_profesional2}} {% endif %} {% if profile.cv.personal_info.nacionalidad %}
+                • <strong>🏙️Nacionalidad:</strong> {{profile.cv.personal_info.nacionalidad}} {% endif %} {% if profile.cv.personal_info.carnet_conducir is not None %}
+                • <strong>🚗Carnet de conducir:</strong> {{ profile.cv.personal_info.carnet_conducir|yesno:"Si,No" }} {% endif %}
+                • <strong>⌚️Disponibilidad:</strong> {{profile.cv.personal_info.disponibilidad}}
                 `,
         },
         perfil: {
           question: `Háblame sobre tu perfil profesional.`,
-          answer: `Soy {{cv.professional_profile.profesion}}
-                {% if cv.professional_profile.objetivo %}
-                • <strong>Objetivo:</strong> {{cv.professional_profile.objetivo}}{% endif %}
+          answer: `Soy {{profile.cv.professional_profile.profesion}}
+                {% if profile.cv.professional_profile.objetivo %}
+                • <strong>Objetivo:</strong> {{profile.cv.professional_profile.objetivo}}{% endif %}
                 
-                • <strong>Resumen:</strong> {{cv.professional_profile.resumen}}`,
+                • <strong>Resumen:</strong> {{profile.cv.professional_profile.resumen}}`,
         },
         experiencia: {
           question: `Cuéntame sobre tu experiencia laboral.`,
-          answer: `{% for experiencia in cv.work_experience %} • <strong>Puesto: {{experiencia.puesto}}</strong>
+          answer: `{% for experiencia in profile.cv.work_experience.all %} 💼 <strong>Puesto: {{experiencia.puesto}}</strong>
                 {% if experiencia.empresa %} empresa -> {{experiencia.empresa}}{% endif %}
                 {% if experiencia.ubicacion %} ubicación -> {{experiencia.ubicacion}} {% endif %}
                 fecha inicio -> {{experiencia.fecha_inicio}}
@@ -705,15 +830,14 @@
                 {% if experiencia.descripcion %} Descripción -> {{experiencia.descripcion}} {% endif %}
                 {% if experiencia.logros %} Logros -> {{experiencia.logros}} {% endif %}
                 {% endfor %}
-
                 `,
         },
         educacion: {
           question: `¿Cuál es tu formación académica reglada?`,
-          answer: `{% for estudio in cv.education %}
-          • <strong> Titulo: {{estudio.titulo}} </strong>
+          answer: `{% for estudio in profile.cv.education.all %}
+          • <strong>🧑🏻‍🏫 Titulo: {{estudio.titulo}} </strong>
           {% if estudio.centro %} Centro -> {{estudio.centro}} {% endif %}
-          {% if estudio.ubicacion %} Centro -> {{estudio.ubicacion}} {% endif %}
+          {% if estudio.ubicacion %} Ubicación -> {{estudio.ubicacion}} {% endif %}
           Fecha inicio -> {{estudio.fecha_inicio}}
           {% if estudio.fecha_fin %} Fecha fin -> {{estudio.fecha_fin}} {% endif %}
           En curso: {{estudio.en_curso|yesno:"Si,No"}}
@@ -722,8 +846,8 @@
         },
         cursos: {
           question: `¿Qué formación complementaria o no reglada tienes?`,
-          answer: `{% for curso in cv.complementary_training %}
-          • <strong>Tipo: {{curso.tipo}} | {{curso.nombre}}</strong>
+          answer: `{% for curso in profile.cv.complementary_training.all %}
+          • <strong>📚 Tipo: {{curso.tipo}} | {{curso.nombre}}</strong>
           {% if curso.entidad %} Entidad -> {{curso.entidad}} {% endif %}
           {% if curso.fecha %} Fecha -> {{curso.fecha}} {% endif %}
           {% if curso.descripcion %} Descripcion -> {{curso.descripcion}} {% endif %}
@@ -732,49 +856,52 @@
         },
         skills: {
           question: `¿Cuáles son tus habilidades técnicas principales (Skills)?`,
-          answer: `{% for skill in cv.skills %}
-          •<strong>Tipo: {{skill.tipo}} | {{skill.nombre}} </strong>
-          {% if skill.categoria %} Categoria -> {{skill.categoria}} {% endif %}
-          {% if skill.nivel %} Nivel -> {{skill.nivel}} {% endif %}
+          answer: `¡Claro! Aquí tienes mis habilidades divididas por tipo:
+          
+          <strong>🛠️ Hard Skills</strong>{% for skill in cv.skills %}{% if skill.tipo == 'Tecnica' %}
+          • <strong>{{skill.nombre}} </strong>
+          {% if skill.categoria %}Categoria -> {{skill.categoria}} {% endif %}
+          {% if skill.nivel %}Nivel -> {% if skill.nivel == 1 %}★☆☆☆☆{% elif skill.nivel == 2 %}★★☆☆☆{% elif skill.nivel == 3 %}★★★☆☆{% elif skill.nivel == 4 %}★★★★☆{% elif skill.nivel == 5 %}★★★★★{% endif %}{% endif %}{% endif %}{% endfor %}
 
-          {% endfor %}
+          <br><strong>🤝 Soft Skills</strong>{% for skill in cv.skills %}{% if skill.tipo == 'SoftSkill' %}
+          • <strong>{{skill.nombre}} </strong>
+          {% if skill.categoria %}Categoria -> {{skill.categoria}} {% endif %}
+          {% if skill.nivel %}Nivel -> {% if skill.nivel == 1 %}★☆☆☆☆{% elif skill.nivel == 2 %}★★☆☆☆{% elif skill.nivel == 3 %}★★★☆☆{% elif skill.nivel == 4 %}★★★★☆{% elif skill.nivel == 5 %}★★★★★{% endif %}{% endif %}{% endif %}{% endfor %}
           `,
         },
         idiomas: {
           question: `¿Qué idiomas dominas?`,
-          answer: `{% for idioma in cv.languages %}
-          •<strong>{{idioma.idioma}}</strong> | {{idioma.nivel}}
+          answer: `{% for idioma in profile.cv.languages.all %}
+          •<strong>🌏 {{idioma.idioma}}</strong> | {{idioma.nivel}}
           {% if idioma.certificacion %} Certificación -> {{idioma.certificacion}} {% endif %}
-
           {% endfor %}`,
         },
-        // Terminar lo último
         proyectos: {
           question: `¿Cuáles han sido tus últimos proyectos?`,
           answer: `¡Claro! He desarrollado varias aplicaciones. Puedes deslizar hacia los lados para ver mis proyectos destacados:`,
           dbData: [
-            {% for proyecto in cv.projects %}
+            {% for proyecto in profile.cv.projects.all %}
             {
               nombre: "{{ proyecto.nombre|escapejs }}",
-              descripcion: "{% if proyecto.descripcion %}{{proyecto.descripcion}}{% endif %}",
-              tecnologias: "{% if proyecto.tecnologias %}{{proyecto.tecnologias}}{% endif %}",
-              link: "{% if proyecto.link %}{{proyecto.link}}{% endif %}"
-            },
+              descripcion: "{% if proyecto.descripcion %}{{proyecto.descripcion|escapejs}}{% endif %}",
+              tecnologias: "{% if proyecto.tecnologias %}{{proyecto.tecnologias|escapejs}}{% endif %}",
+              link: "{% if proyecto.link %}{{proyecto.link|escapejs}}{% endif %}"
+            }{% if not forloop.last %},{% endif %}
             {% endfor %}
           ]
         },
         logros: {
           question: `¿Puedes destacar algún logro importante?`,
-          answer: `{% for logro in cv.achievements %}
-          • <strong>{{logro.titulo}} </strong>| {{logro.tipo}}
+          answer: `{% for logro in profile.cv.achievements.all %}
+          • <strong>🏆 {{logro.titulo}} </strong>| {{logro.tipo}}
           {% if logro.descripcion %} Descripción -> {{logro.descripcion}} {% endif %}
           {% if logro.fecha %} Fecha -> {{logro.fecha}} {% endif %}
           {% endfor %}`,
         },
         voluntariados: {
           question: `¿Tienes experiencia en voluntariados?`,
-          answer: `{% for voluntariado in cv.volunteering %}
-          •<strong>{{voluntariado.funcion}} | {{voluntariado.organizacion}} </strong>
+          answer: `{% for voluntariado in profile.cv.volunteering.all %}
+          •<strong>🗺️ {{voluntariado.funcion}} | {{voluntariado.organizacion}} </strong>
           {% if voluntariado.impacto %} Impacto -> {{voluntariado.impacto}} {% endif %}
           {% if voluntariado.fecha_inicio %} Fecha inicio -> {{voluntariado.fecha_inicio}} {% endif %}
           {% if voluntariado.fecha_fin %} Fecha fin -> {{voluntariado.fecha_fin}} {% endif %}
@@ -783,25 +910,25 @@
         },
         redes: {
           question: `¿Dónde puedo encontrar tus redes sociales profesionales?`,
-          answer: `{% if cv.social_network.linkedin %}• Linkedin: {{cv.social_network.linkedin}}{% endif %}
-          {% if cv.social_network.github %}• github: {{cv.social_network.github}}{% endif %}
-          {% if cv.social_network.portfolio %}• portfolio: {{cv.social_network.portfolio}}{% endif %}
-          {% if cv.social_network.twitter %}• twitter: {{cv.social_network.twitter}}{% endif %}
-          {% if cv.social_network.otras %}• otras: {{cv.social_network.otras}}{% endif %}
+          answer: `{% if profile.cv.social_network.linkedin %}• Linkedin: {{profile.cv.social_network.linkedin}}{% endif %}
+          {% if profile.cv.social_network.github %}• github: {{profile.cv.social_network.github}}{% endif %}
+          {% if profile.cv.social_network.portfolio %}• portfolio: {{profile.cv.social_network.portfolio}}{% endif %}
+          {% if profile.cv.social_network.twitter %}• twitter: {{profile.cv.social_network.twitter}}{% endif %}
+          {% if profile.cv.social_network.otras %}• otras: {{profile.cv.social_network.otras}}{% endif %}
           `,
         },
         hobbies: {
           question: `¿Cuáles son tus intereses y hobbies fuera del trabajo?`,
-          answer: `Estos son mis hobbies:{% for interes in cv.interests %}
+          answer: `Estos son mis hobbies:{% for interes in profile.cv.interests.all %}
           • <strong>{{interes.nombre}}</strong>
           {% endfor %}`,
         },
         adicional: {
           question: `¿Hay alguna información adicional que debamos saber?`,
-          answer: `• Disponibilidad para viajar: {{cv.other_info.disponibilidad_viajar|yesno:"Si,No"}}
-          • Teletrabajo: {{cv.other_info.teletrabajo}}
-          {% if cv.other_info.expectativa_salarial %} • Expectativa salarial: {{cv.other_info.expectativa_salarial}}{% endif %}
-          {% if cv.other_info.notas %} • Notas: {{cv.other_info.notas}} {% endif %}`,
+          answer: `• Disponibilidad para viajar: {{profile.cv.other_info.disponibilidad_viajar|yesno:"Si,No"}}
+          • Teletrabajo: {{profile.cv.other_info.teletrabajo}}
+          {% if profile.cv.other_info.expectativa_salarial %} • Expectativa salarial: {{profile.cv.other_info.expectativa_salarial}}{% endif %}
+          {% if profile.cv.other_info.notas %} • Notas: {{profile.cv.other_info.notas}} {% endif %}`,
         },
       };
 
@@ -828,27 +955,57 @@
       const welcomeScreen = document.getElementById("welcomeScreen");
       const chatContainer = document.getElementById("chatContainer");
       const chatInput = document.getElementById("chatInput");
-      const currentSectionLabel = document.getElementById(
-        "current-section-label",
-      );
+      const currentSectionLabel = document.getElementById("current-section-label");
       let isTyping = false;
 
       const themeToggleBtn = document.getElementById("theme-toggle");
       themeToggleBtn.addEventListener("click", () => {
         document.body.classList.toggle("dark-mode");
-        themeToggleBtn.innerText = document.body.classList.contains("dark-mode")
-          ? "☀️"
-          : "🌙";
+        themeToggleBtn.innerText = document.body.classList.contains("dark-mode") ? "☀️" : "🌙";
+      });
+
+      // EVENTO PARA NUEVO APARTADO / CHAT LIMPIO
+      document.getElementById("btn-new-chat").addEventListener("click", () => {
+        if (isTyping) return;
+        
+        document.getElementById("contactSection").style.display = "none";
+        document.getElementById("inputArea").style.display = "flex";
+
+        welcomeScreen.style.display = "flex";
+        chatContainer.style.display = "none";
+        chatContainer.innerHTML = ""; 
+        chatInput.value = "";
+        
+        chatInput.removeAttribute("readonly");
+        currentSectionLabel.innerText = "Nuevo apartado";
+        document.querySelectorAll(".nav-item").forEach((el) => el.classList.remove("active"));
+        
+        if (window.innerWidth <= 1024) {
+          document.getElementById("sideBar").classList.remove("show");
+        }
+      });
+
+      // EVENTO PARA MOSTRAR EL FORMULARIO DE CONTACTO
+      document.getElementById("btn-contact-view").addEventListener("click", () => {
+        if (isTyping) return;
+        
+        welcomeScreen.style.display = "none";
+        chatContainer.style.display = "none";
+        document.getElementById("inputArea").style.display = "none"; 
+        document.getElementById("contactSection").style.display = "flex";
+        
+        document.querySelectorAll(".nav-item").forEach((el) => el.classList.remove("active"));
+        currentSectionLabel.innerText = "Contacto";
+        
+        if (window.innerWidth <= 1024) {
+          document.getElementById("sideBar").classList.remove("show");
+        }
       });
 
       function setActiveItem(clickedItem) {
-        document
-          .querySelectorAll(".nav-item")
-          .forEach((el) => el.classList.remove("active"));
+        document.querySelectorAll(".nav-item").forEach((el) => el.classList.remove("active"));
         clickedItem.classList.add("active");
-        let textoLimpio = clickedItem.innerText
-          .replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[\u2600-\u27FF]|\s+/g, " ")
-          .trim();
+        let textoLimpio = clickedItem.innerText.replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[\u2600-\u27FF]|\s+/g, " ").trim();
         currentSectionLabel.innerText = textoLimpio;
       }
 
@@ -858,7 +1015,7 @@
         messageDiv.innerHTML =
           sender === "user"
             ? `<div class="bubble">${text}</div>` : 
-              `<div class="avatar-circle">{{cv.personal_info.nombre | slice:":1"}}{{cv.personal_info.apellidos | slice:":1"}}</div><div><strong>{{cv.personal_info.nombre}}</strong><p>${text}</p></div>`;
+              `<div class="avatar-circle">{{profile.cv.personal_info.nombre | slice:":1"}}{{profile.cv.personal_info.apellidos | slice:":1"}}</div><div><strong>{{profile.cv.personal_info.nombre}}</strong><p>${text}</p></div>`;
         chatContainer.appendChild(messageDiv);
         chatContainer.scrollTop = chatContainer.scrollHeight;
       }
@@ -873,7 +1030,6 @@
           const card = document.createElement("div");
           card.className = "project-card";
           
-          // Creamos el HTML dinámicamente. Si hay link, añadimos una etiqueta <a>
           card.innerHTML = `
                     <div class="project-title">${proj.nombre}</div>
                     <div class="project-desc">${proj.descripcion}</div>
@@ -893,6 +1049,11 @@
         let textoPregunta = data.question;
         let textoRespuesta = data.answer;
 
+        document.getElementById("contactSection").style.display = "none";
+        document.getElementById("inputArea").style.display = "flex";
+        
+        chatInput.setAttribute("readonly", true);
+
         welcomeScreen.style.display = "none";
         chatContainer.style.display = "flex";
         chatContainer.innerHTML = "";
@@ -910,7 +1071,6 @@
               setTimeout(() => {
                 appendMessage("ai", textoRespuesta);
 
-                // Comprobamos si el dbData es el array de proyectos
                 if (
                   data.dbData &&
                   Array.isArray(data.dbData) &&
@@ -921,6 +1081,7 @@
                 }
 
                 isTyping = false;
+                chatInput.removeAttribute("readonly");
               }, 800);
             }, 500);
           }
@@ -943,6 +1104,10 @@
         item.addEventListener("click", function () {
           if (isTyping) return;
           setActiveItem(this);
+          
+          document.getElementById("contactSection").style.display = "none";
+          document.getElementById("inputArea").style.display = "flex";
+
           const section = this.getAttribute("data-section");
           const data = historyData[section];
           if (data) {
@@ -951,22 +1116,161 @@
             chatContainer.innerHTML = "";
             appendMessage("user", data.question);
             appendMessage("ai", data.answer);
+            chatInput.removeAttribute("readonly"); 
           }
         });
       });
 
       document.getElementById("logo-btn").addEventListener("click", () => {
         if (isTyping) return;
+        
+        document.getElementById("contactSection").style.display = "none";
+        document.getElementById("inputArea").style.display = "flex";
+
         welcomeScreen.style.display = "flex";
         chatContainer.style.display = "none";
         chatContainer.innerHTML = "";
         chatInput.value = "";
+        
+        chatInput.removeAttribute("readonly"); 
+        
         currentSectionLabel.innerText = "sección";
-        document
-          .querySelectorAll(".nav-item")
-          .forEach((el) => el.classList.remove("active"));
+        document.querySelectorAll(".nav-item").forEach((el) => el.classList.remove("active"));
       });
 
+      // === LÓGICA PARA CHAT MANUAL DEL USUARIO ===
+      function handleUserMessage() {
+        const text = chatInput.value.trim();
+        if (!text || isTyping) return; 
+
+        if (welcomeScreen.style.display !== "none") {
+            welcomeScreen.style.display = "none";
+            chatContainer.style.display = "flex";
+        }
+
+        appendMessage("user", text);
+        chatInput.value = "";
+        
+        chatInput.setAttribute("readonly", true);
+        isTyping = true;
+
+        setTimeout(() => {
+          appendMessage("ai", "Próximamente...");
+          isTyping = false;
+          chatInput.removeAttribute("readonly"); 
+          chatContainer.scrollTop = chatContainer.scrollHeight;
+        }, 600); 
+      }
+
+      document.getElementById("sendBtn").addEventListener("click", handleUserMessage);
+
+      chatInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          handleUserMessage();
+        }
+      });
+
+      // === VALIDACIÓN DEL FORMULARIO CON REGEX (EN TIEMPO REAL) ===
+      
+      const nombreRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]{2,60}$/;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const mensajeRegex = /^[\s\S]{10,1000}$/; 
+      const empresaNombreRegex = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑüÜ\s\.,&'-]{2,100}$/;
+      const empresaCargoRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s\.-]{2,60}$/;
+
+      const tipoInput = document.getElementById("frm_tipo");
+      const nombreInput = document.getElementById("frm_nombre");
+      const emailInput = document.getElementById("frm_email");
+      const mensajeInput = document.getElementById("frm_mensaje");
+      
+      const wrapEmpresaNombre = document.getElementById("wrap_empresa_nombre");
+      const wrapEmpresaCargo = document.getElementById("wrap_empresa_cargo");
+      const empresaNombreInput = document.getElementById("frm_empresa_nombre");
+      const empresaCargoInput = document.getElementById("frm_empresa_cargo");
+
+      const errTipo = document.getElementById("err_tipo");
+      const errNombre = document.getElementById("err_nombre");
+      const errEmail = document.getElementById("err_email");
+      const errMensaje = document.getElementById("err_mensaje");
+      const errEmpresaNombre = document.getElementById("err_empresa_nombre");
+      const errEmpresaCargo = document.getElementById("err_empresa_cargo");
+
+      // Función genérica de validación
+      function validateField(inputElement, errorElement, regex) {
+        const value = inputElement.value.trim();
+        let isValid = false;
+
+        if (regex) {
+            isValid = regex.test(value);
+        } else {
+            isValid = value !== ""; // Para selects
+        }
+
+        if (isValid) {
+            inputElement.classList.remove("input-error");
+            inputElement.classList.add("input-success");
+            errorElement.style.display = "none";
+        } else {
+            inputElement.classList.remove("input-success");
+            inputElement.classList.add("input-error");
+            errorElement.style.display = "block";
+        }
+        return isValid;
+      }
+
+      // Evento de cambio para Tipo (Particular / Empresa)
+      tipoInput.addEventListener('change', () => {
+        validateField(tipoInput, errTipo, null);
+        
+        if (tipoInput.value === 'empresa') {
+            wrapEmpresaNombre.style.display = 'flex';
+            wrapEmpresaCargo.style.display = 'flex';
+        } else {
+            wrapEmpresaNombre.style.display = 'none';
+            wrapEmpresaCargo.style.display = 'none';
+            
+            // Limpiamos los campos y errores si vuelve a "Particular"
+            empresaNombreInput.value = '';
+            empresaCargoInput.value = '';
+            empresaNombreInput.classList.remove("input-error", "input-success");
+            empresaCargoInput.classList.remove("input-error", "input-success");
+            errEmpresaNombre.style.display = "none";
+            errEmpresaCargo.style.display = "none";
+        }
+      });
+
+      // Eventos para validar MIENTRAS el usuario escribe
+      nombreInput.addEventListener('input', () => validateField(nombreInput, errNombre, nombreRegex));
+      emailInput.addEventListener('input', () => validateField(emailInput, errEmail, emailRegex));
+      mensajeInput.addEventListener('input', () => validateField(mensajeInput, errMensaje, mensajeRegex));
+      empresaNombreInput.addEventListener('input', () => validateField(empresaNombreInput, errEmpresaNombre, empresaNombreRegex));
+      empresaCargoInput.addEventListener('input', () => validateField(empresaCargoInput, errEmpresaCargo, empresaCargoRegex));
+
+      // Evento de envío del formulario
+      document.getElementById("mainContactForm").addEventListener("submit", function (e) {
+        e.preventDefault(); 
+        
+        const isTipoValid = validateField(tipoInput, errTipo, null);
+        const isNombreValid = validateField(nombreInput, errNombre, nombreRegex);
+        const isEmailValid = validateField(emailInput, errEmail, emailRegex);
+        const isMensajeValid = validateField(mensajeInput, errMensaje, mensajeRegex);
+        
+        let isEmpresaValid = true;
+        
+        // Si es empresa, validamos los campos dinámicos
+        if (tipoInput.value === 'empresa') {
+            const isEmpresaNombreValid = validateField(empresaNombreInput, errEmpresaNombre, empresaNombreRegex);
+            const isEmpresaCargoValid = validateField(empresaCargoInput, errEmpresaCargo, empresaCargoRegex);
+            isEmpresaValid = isEmpresaNombreValid && isEmpresaCargoValid;
+        }
+
+        // Si todos los campos necesarios son válidos
+        if (isTipoValid && isNombreValid && isEmailValid && isMensajeValid && isEmpresaValid) {
+            this.innerHTML = '<div style="text-align:center; padding: 20px; font-size: 18px; font-weight: bold; color: var(--text-primary);">✅ ¡Mensaje enviado correctamente!<br><br><span style="font-size: 14px; font-weight: normal;">Me pondré en contacto contigo muy pronto.</span></div>';
+        }
+      });
+
+      // === MENÚ MÓVIL ===
       const sideBar = document.getElementById("sideBar");
       const openMenuBtn = document.getElementById("open-menu");
       const closeMenuBtn = document.getElementById("close-menu");
