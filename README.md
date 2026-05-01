@@ -11,7 +11,7 @@
 <a id="es"></a>
 # 🇪🇸 CV Interactivo | Interfaz Estilo Asistente de IA
 
-¡Bienvenido al repositorio de mi Currículum Vitae interactivo! 
+¡Bienvenido al repositorio de mi Currículum Vitae interactivo!
 
 Este proyecto es una aplicación web Frontend de una sola página (Single Page Application) que simula la interfaz de un asistente de Inteligencia Artificial (tipo ChatGPT). Permite a los reclutadores y visitantes explorar mi perfil profesional, experiencia y proyectos mediante una experiencia conversacional dinámica.
 
@@ -35,7 +35,7 @@ Este proyecto es una aplicación web Frontend de una sola página (Single Page A
 
 1. Clona este repositorio:
 
-    git clone https://github.com/[TuUsuario]/[TuRepositorio].git
+    git clone https://github.com/Madrix5/cv-gpt.git
 
 2. Abre el archivo principal en tu navegador web.
    *(Nota: Al faltar la Base de Datos y el Backend, las etiquetas de Django como {{ }} se mostrarán como texto plano, pero el diseño, las animaciones y la lógica de JS funcionarán perfectamente).*
@@ -75,7 +75,7 @@ This project is a Frontend Single Page Application that simulates the interface 
 
 1. Clone this repository:
 
-    git clone https://github.com/[TuUsername]/[TuRepository].git
+    git clone https://github.com/Madrix5/cv-gpt.git
 
 2. Open the main file in your web browser.
    *(Note: Since the Database and Backend are missing, Django tags like {{ }} will be displayed as plain text, but the design, animations, and JS logic will work perfectly).*
@@ -115,7 +115,7 @@ Dieses Projekt ist eine Frontend-Single-Page-Application, die die Benutzeroberfl
 
 1. Klonen Sie dieses Repository:
 
-    git clone https://github.com/[DeinBenutzername]/[DeinRepository].git
+    git clone https://github.com/Madrix5/cv-gpt.git
 
 2. Öffnen Sie die Hauptdatei in Ihrem Webbrowser.
    *(Hinweis: Da die Datenbank und das Backend fehlen, werden Django-Tags wie {{ }} als Klartext angezeigt, aber das Design, die Animationen und die JS-Logik funktionieren einwandfrei).*
