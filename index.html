@@ -180,13 +180,82 @@
         background-color: var(--bg-hover);
       }
 
+      /* === HISTORIAL ESTILOS NUEVOS === */
       .history-item {
-        display: block;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: var(--text-secondary);
+        position: relative; /* Necesario para anclar el dropdown */
+      }
+
+      .history-item span.title {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        color: var(--text-secondary);
+        flex-grow: 1;
+        padding-right: 5px;
       }
+
+      .history-options-btn {
+        background: none;
+        border: none;
+        color: var(--text-secondary);
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 0 5px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.2s ease, color 0.2s ease;
+      }
+
+      .history-options-btn:hover {
+        background-color: var(--border-light);
+        color: var(--text-primary);
+      }
+
+      .history-dropdown {
+        display: none;
+        position: absolute;
+        right: 10px;
+        top: 35px;
+        background-color: var(--bg-main);
+        border: 1px solid var(--border-light);
+        border-radius: 6px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        z-index: 100;
+        overflow: hidden;
+        min-width: 120px;
+      }
+
+      .history-dropdown.show {
+        display: block;
+        animation: fadeIn 0.15s ease forwards;
+      }
+
+      .history-dropdown-item {
+        padding: 10px 15px;
+        color: #ff4d4f;
+        font-size: 13px;
+        cursor: pointer;
+        background: none;
+        border: none;
+        width: 100%;
+        text-align: left;
+        font-family: inherit;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: background-color 0.2s ease;
+      }
+
+      .history-dropdown-item:hover {
+        background-color: var(--bg-hover);
+      }
+      /* === FIN HISTORIAL ESTILOS === */
 
       .user-profile {
         padding: 15px;
@@ -505,7 +574,6 @@
         border-color: var(--bg-button-dark);
       }
 
-      /* Clases de validación */
       .contact-input.input-error {
         border-color: #ff4d4f;
       }
@@ -543,7 +611,6 @@
         transform: scale(0.98);
       }
 
-      /* Animación para los campos dinámicos */
       @keyframes fadeIn {
         from { opacity: 0; transform: translateY(-5px); }
         to { opacity: 1; transform: translateY(0); }
@@ -683,20 +750,10 @@
           </li>
         </ul>
 
-        <div class="section-title">Historial de chats</div>
-        <ul class="nav-list">
-          <li class="nav-item history-item history-trigger" data-section="h_retos">
-            ¿Cuál ha sido tu mayor reto técnico?
-          </li>
-          <li class="nav-item history-item history-trigger" data-section="h_berlin">
-            Cuéntame más sobre tu año en Berlín
-          </li>
-          <li class="nav-item history-item history-trigger" data-section="h_42">
-            ¿Cómo fue la experiencia en 42 Barcelona?
-          </li>
-          <li class="nav-item history-item history-trigger" data-section="h_padel">
-            El padel y el trabajo en equipo
-          </li>
+        <!-- SECCIÓN DE HISTORIAL LOCAL (OCULTA POR DEFECTO SI ESTÁ VACÍA) -->
+        <div class="section-title" id="dynamic-history-title" style="display: none;">Historial de chats</div>
+        <ul class="nav-list" id="dynamic-history-list" style="display: none;">
+            <!-- Los chats locales se cargarán aquí dinámicamente -->
         </ul>
       </div>
 
@@ -754,7 +811,6 @@
             <span class="error-msg" id="err_nombre">Ingresa un nombre válido (mín. 2 letras, solo letras y espacios).</span>
           </div>
 
-          <!-- NUEVOS CAMPOS (EMPRESA Y CARGO) -->
           <div class="input-wrapper-contact dynamic-field" id="wrap_empresa_nombre" style="display: none;">
             <input type="text" class="contact-input" id="frm_empresa_nombre" name="empresa_nombre" placeholder="Nombre de la empresa">
             <span class="error-msg" id="err_empresa_nombre">Ingresa un nombre de empresa válido.</span>
@@ -764,7 +820,6 @@
             <input type="text" class="contact-input" id="frm_empresa_cargo" name="empresa_cargo" placeholder="Tu cargo (Ej: RRHH, Tech Lead...)">
             <span class="error-msg" id="err_empresa_cargo">Ingresa un cargo válido (mín. 2 letras).</span>
           </div>
-          <!-- FIN NUEVOS CAMPOS -->
 
           <div class="input-wrapper-contact">
             <input type="text" inputmode="email" class="contact-input" id="frm_email" name="email" placeholder="Tu correo electrónico">
@@ -794,6 +849,55 @@
     </main>
 
     <script>
+      // === GESTOR DEL HISTORIAL LOCAL ===
+      class ChatHistoryManager {
+        constructor() {
+          this.storageKey = 'cv_chat_history';
+          this.chats = this.loadChats();
+        }
+
+        loadChats() {
+          const saved = localStorage.getItem(this.storageKey);
+          return saved ? JSON.parse(saved) : [];
+        }
+
+        saveChats() {
+          localStorage.setItem(this.storageKey, JSON.stringify(this.chats));
+        }
+
+        addOrUpdateChat(id, title, messages) {
+          const existingIndex = this.chats.findIndex(c => c.id === id);
+          if (existingIndex > -1) {
+            this.chats[existingIndex].messages = messages;
+          } else {
+            this.chats.unshift({ id, title, messages }); 
+          }
+          this.saveChats();
+          renderDynamicHistory(); 
+        }
+
+        getChatById(id) {
+          return this.chats.find(c => c.id === id);
+        }
+
+        // NUEVO: Función para eliminar chats
+        deleteChat(id) {
+          this.chats = this.chats.filter(c => c.id !== id);
+          this.saveChats();
+          renderDynamicHistory();
+          
+          // Si eliminamos el chat que estamos viendo, limpiamos la pantalla
+          if (currentCustomChatId === id) {
+              document.getElementById("btn-new-chat").click();
+          }
+        }
+      }
+
+      const chatManager = new ChatHistoryManager();
+      let currentCustomChatId = null; 
+      let currentCustomMessages = []; 
+
+
       // === 1. OBJETO DATOS DEL CURRÍCULUM ===
       const cvData = {
         info_personal: {
@@ -858,7 +962,7 @@
           question: `¿Cuáles son tus habilidades técnicas principales (Skills)?`,
           answer: `¡Claro! Aquí tienes mis habilidades divididas por tipo:
           
-          <strong>🛠️ Hard Skills</strong>{% for skill in profile.cv.skills.all %}{% if skill.tipo == 'Tecnica' %}
+          <strong>🛠️ Hard Skills</strong>{% for skill in cv.skills %}{% if skill.tipo == 'Tecnica' %}
           • <strong>{{skill.nombre}} </strong>
           {% if skill.categoria %}Categoria -> {{skill.categoria}} {% endif %}
           {% if skill.nivel %}Nivel -> {% if skill.nivel == 1 %}★☆☆☆☆{% elif skill.nivel == 2 %}★★☆☆☆{% elif skill.nivel == 3 %}★★★☆☆{% elif skill.nivel == 4 %}★★★★☆{% elif skill.nivel == 5 %}★★★★★{% endif %}{% endif %}{% endif %}{% endfor %}
@@ -932,25 +1036,6 @@
         },
       };
 
-      const historyData = {
-        h_retos: {
-          question: `¿Cuál ha sido tu mayor reto técnico?`,
-          answer: `Mi mayor reto fue el año en **42 Barcelona**...`,
-        },
-        h_berlin: {
-          question: `Cuéntame más sobre tu año en Berlín`,
-          answer: `Vivir en Berlín a los 20 años fue un punto de inflexión...`,
-        },
-        h_42: {
-          question: `¿Cómo fue la experiencia en 42 Barcelona?`,
-          answer: `Fue increíble. Descubrí que me encanta picar código...`,
-        },
-        h_padel: {
-          question: `El padel y el trabajo en equipo`,
-          answer: `Llevo años compitiendo en padel...`,
-        },
-      };
-
       // LÓGICA DE LA INTERFAZ
       const welcomeScreen = document.getElementById("welcomeScreen");
       const chatContainer = document.getElementById("chatContainer");
@@ -964,10 +1049,111 @@
         themeToggleBtn.innerText = document.body.classList.contains("dark-mode") ? "☀️" : "🌙";
       });
 
+      // RENDERIZAR HISTORIAL DINÁMICO (CON OPCIONES DE BORRADO)
+      function renderDynamicHistory() {
+        const list = document.getElementById('dynamic-history-list');
+        const title = document.getElementById('dynamic-history-title');
+        list.innerHTML = ''; 
+
+        if (chatManager.chats.length === 0) {
+            list.style.display = 'none';
+            title.style.display = 'none';
+            return;
+        }
+
+        list.style.display = 'block';
+        title.style.display = 'block';
+
+        chatManager.chats.forEach(chat => {
+            const li = document.createElement('li');
+            li.className = 'nav-item history-item'; // Quitamos history-local-trigger de la clase principal
+            
+            // 1. Título del chat (El que es clicable para abrir)
+            const titleSpan = document.createElement('span');
+            titleSpan.className = 'title';
+            titleSpan.innerText = chat.title;
+            titleSpan.style.cursor = 'pointer';
+            
+            titleSpan.addEventListener('click', () => {
+                if (isTyping) return;
+                setActiveItem(li);
+                loadCustomChat(chat.id);
+            });
+
+            // 2. Botón de opciones (los 3 puntos)
+            const optionsBtn = document.createElement('button');
+            optionsBtn.className = 'history-options-btn';
+            optionsBtn.innerHTML = '⋮';
+            
+            // 3. Menú desplegable oculto
+            const dropdown = document.createElement('div');
+            dropdown.className = 'history-dropdown';
+            
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'history-dropdown-item';
+            deleteBtn.innerHTML = '🗑️ Eliminar';
+            
+            dropdown.appendChild(deleteBtn);
+            
+            // Evento para mostrar/ocultar el dropdown
+            optionsBtn.addEventListener('click', (e) => {
+                e.stopPropagation(); // Evita que se disparen otros clics
+                
+                // Cierra otros dropdowns que estén abiertos
+                document.querySelectorAll('.history-dropdown').forEach(d => {
+                    if(d !== dropdown) d.classList.remove('show');
+                });
+                
+                dropdown.classList.toggle('show');
+            });
+            
+            // Evento para borrar el chat
+            deleteBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                chatManager.deleteChat(chat.id);
+            });
+            
+            li.appendChild(titleSpan);
+            li.appendChild(optionsBtn);
+            li.appendChild(dropdown);
+            
+            list.appendChild(li);
+        });
+      }
+      
+      // Llamada inicial
+      renderDynamicHistory();
+
+      // Cierra todos los dropdowns si haces clic en cualquier otra parte de la pantalla
+      document.addEventListener('click', () => {
+          document.querySelectorAll('.history-dropdown').forEach(d => d.classList.remove('show'));
+      });
+
+      function loadCustomChat(id) {
+        document.getElementById("contactSection").style.display = "none";
+        document.getElementById("inputArea").style.display = "flex";
+        welcomeScreen.style.display = "none";
+        chatContainer.style.display = "flex";
+        chatContainer.innerHTML = "";
+        
+        currentCustomChatId = id; 
+        const chat = chatManager.getChatById(id);
+        currentCustomMessages = chat.messages; 
+        
+        chat.messages.forEach(msg => {
+            appendMessage(msg.sender, msg.text);
+        });
+        
+        chatInput.removeAttribute("readonly");
+      }
+
       // EVENTO PARA NUEVO APARTADO / CHAT LIMPIO
       document.getElementById("btn-new-chat").addEventListener("click", () => {
         if (isTyping) return;
         
+        currentCustomChatId = null; 
+        currentCustomMessages = [];
+
         document.getElementById("contactSection").style.display = "none";
         document.getElementById("inputArea").style.display = "flex";
 
@@ -989,6 +1175,8 @@
       document.getElementById("btn-contact-view").addEventListener("click", () => {
         if (isTyping) return;
         
+        currentCustomChatId = null; 
+
         welcomeScreen.style.display = "none";
         chatContainer.style.display = "none";
         document.getElementById("inputArea").style.display = "none"; 
@@ -1006,6 +1194,8 @@
         document.querySelectorAll(".nav-item").forEach((el) => el.classList.remove("active"));
         clickedItem.classList.add("active");
         let textoLimpio = clickedItem.innerText.replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[\u2600-\u27FF]|\s+/g, " ").trim();
+        // Evita que copie el icono de "eliminar" o "3 puntos" en el título
+        textoLimpio = textoLimpio.replace('⋮', '').replace('🗑️ Eliminar', '').trim();
         currentSectionLabel.innerText = textoLimpio;
       }
 
@@ -1048,6 +1238,8 @@
         let i = 0;
         let textoPregunta = data.question;
         let textoRespuesta = data.answer;
+
+        currentCustomChatId = null; 
 
         document.getElementById("contactSection").style.display = "none";
         document.getElementById("inputArea").style.display = "flex";
@@ -1100,30 +1292,11 @@
         });
       });
 
-      document.querySelectorAll(".history-trigger").forEach((item) => {
-        item.addEventListener("click", function () {
-          if (isTyping) return;
-          setActiveItem(this);
-          
-          document.getElementById("contactSection").style.display = "none";
-          document.getElementById("inputArea").style.display = "flex";
-
-          const section = this.getAttribute("data-section");
-          const data = historyData[section];
-          if (data) {
-            welcomeScreen.style.display = "none";
-            chatContainer.style.display = "flex";
-            chatContainer.innerHTML = "";
-            appendMessage("user", data.question);
-            appendMessage("ai", data.answer);
-            chatInput.removeAttribute("readonly"); 
-          }
-        });
-      });
-
       document.getElementById("logo-btn").addEventListener("click", () => {
         if (isTyping) return;
         
+        currentCustomChatId = null; 
+
         document.getElementById("contactSection").style.display = "none";
         document.getElementById("inputArea").style.display = "flex";
 
@@ -1143,19 +1316,39 @@
         const text = chatInput.value.trim();
         if (!text || isTyping) return; 
 
-        if (welcomeScreen.style.display !== "none") {
+        if (welcomeScreen.style.display !== "none" || (!currentCustomChatId && document.querySelectorAll('.chat-message').length === 0)) {
             welcomeScreen.style.display = "none";
             chatContainer.style.display = "flex";
+            currentCustomChatId = 'chat_' + Date.now();
+            currentCustomMessages = [];
+            currentSectionLabel.innerText = "Nuevo chat";
+            
+            document.querySelectorAll(".nav-item").forEach((el) => el.classList.remove("active"));
         }
 
         appendMessage("user", text);
         chatInput.value = "";
-        
         chatInput.setAttribute("readonly", true);
         isTyping = true;
 
+        if (currentCustomChatId) {
+            currentCustomMessages.push({sender: 'user', text: text});
+            let title = currentCustomMessages[0].text;
+            if (title.length > 25) title = title.substring(0, 25) + '...';
+            chatManager.addOrUpdateChat(currentCustomChatId, title, currentCustomMessages);
+        }
+
         setTimeout(() => {
-          appendMessage("ai", "Próximamente...");
+          const aiText = "Próximamente...";
+          appendMessage("ai", aiText);
+          
+          if (currentCustomChatId) {
+              currentCustomMessages.push({sender: 'ai', text: aiText});
+              let title = currentCustomMessages[0].text;
+              if (title.length > 25) title = title.substring(0, 25) + '...';
+              chatManager.addOrUpdateChat(currentCustomChatId, title, currentCustomMessages);
+          }
+
           isTyping = false;
           chatInput.removeAttribute("readonly"); 
           chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -1170,8 +1363,7 @@
         }
       });
 
-      // === VALIDACIÓN DEL FORMULARIO CON REGEX (EN TIEMPO REAL) ===
-      
+      // === VALIDACIÓN DEL FORMULARIO CON REGEX ===
       const nombreRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]{2,60}$/;
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       const mensajeRegex = /^[\s\S]{10,1000}$/; 
@@ -1195,7 +1387,6 @@
       const errEmpresaNombre = document.getElementById("err_empresa_nombre");
       const errEmpresaCargo = document.getElementById("err_empresa_cargo");
 
-      // Función genérica de validación
       function validateField(inputElement, errorElement, regex) {
         const value = inputElement.value.trim();
         let isValid = false;
@@ -1203,7 +1394,7 @@
         if (regex) {
             isValid = regex.test(value);
         } else {
-            isValid = value !== ""; // Para selects
+            isValid = value !== ""; 
         }
 
         if (isValid) {
@@ -1218,7 +1409,6 @@
         return isValid;
       }
 
-      // Evento de cambio para Tipo (Particular / Empresa)
       tipoInput.addEventListener('change', () => {
         validateField(tipoInput, errTipo, null);
         
@@ -1229,7 +1419,6 @@
             wrapEmpresaNombre.style.display = 'none';
             wrapEmpresaCargo.style.display = 'none';
             
-            // Limpiamos los campos y errores si vuelve a "Particular"
             empresaNombreInput.value = '';
             empresaCargoInput.value = '';
             empresaNombreInput.classList.remove("input-error", "input-success");
@@ -1239,14 +1428,12 @@
         }
       });
 
-      // Eventos para validar MIENTRAS el usuario escribe
       nombreInput.addEventListener('input', () => validateField(nombreInput, errNombre, nombreRegex));
       emailInput.addEventListener('input', () => validateField(emailInput, errEmail, emailRegex));
       mensajeInput.addEventListener('input', () => validateField(mensajeInput, errMensaje, mensajeRegex));
       empresaNombreInput.addEventListener('input', () => validateField(empresaNombreInput, errEmpresaNombre, empresaNombreRegex));
       empresaCargoInput.addEventListener('input', () => validateField(empresaCargoInput, errEmpresaCargo, empresaCargoRegex));
 
-      // Evento de envío del formulario
       document.getElementById("mainContactForm").addEventListener("submit", function (e) {
         e.preventDefault(); 
         
@@ -1257,14 +1444,12 @@
         
         let isEmpresaValid = true;
         
-        // Si es empresa, validamos los campos dinámicos
         if (tipoInput.value === 'empresa') {
             const isEmpresaNombreValid = validateField(empresaNombreInput, errEmpresaNombre, empresaNombreRegex);
             const isEmpresaCargoValid = validateField(empresaCargoInput, errEmpresaCargo, empresaCargoRegex);
             isEmpresaValid = isEmpresaNombreValid && isEmpresaCargoValid;
         }
 
-        // Si todos los campos necesarios son válidos
         if (isTipoValid && isNombreValid && isEmailValid && isMensajeValid && isEmpresaValid) {
             this.innerHTML = '<div style="text-align:center; padding: 20px; font-size: 18px; font-weight: bold; color: var(--text-primary);">✅ ¡Mensaje enviado correctamente!<br><br><span style="font-size: 14px; font-weight: normal;">Me pondré en contacto contigo muy pronto.</span></div>';
         }
