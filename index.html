@@ -905,7 +905,7 @@
           answer: `¡Hola! Soy {{profile.cv.personal_info.nombre}} {{profile.cv.personal_info.apellidos}} estos son mis datos:
                 {% if profile.cv.personal_info.fecha_nacimiento %}
                 • <strong>📅Fecha nacimiento:</strong> {{profile.cv.personal_info.fecha_nacimiento}} {% endif %}
-                • <strong>📍Ubicación:</strong> {{profile.cv.personal_info.ciudad}}, {{profile.cv.personal_info.pais}}{% if profile.cv.personal_info.codigo_postal%}, {{cv.personal_info.codigo_postal}}{% endif %}
+                • <strong>📍Ubicación:</strong> {{profile.cv.personal_info.ciudad}}, {{profile.cv.personal_info.pais}}{% if profile.cv.personal_info.codigo_postal%}, {{profile.cv.personal_info.codigo_postal}}{% endif %}
                 • <strong>📱Teléfono:</strong> {{profile.cv.personal_info.telefono1}} {% if profile.cv.personal_info.telefono2 %}
                 • <strong>📞Telefono 2:</strong> {{profile.cv.personal_info.telefono2}} {% endif %}
                 • <strong>✉️Email:</strong> {{profile.cv.personal_info.email_profesional1}} {% if profile.cv.personal_info.email_profesional2 %}
@@ -1483,6 +1483,7 @@
           }
         });
       });
+      // TODO 
     </script>
   </body>
 </html>
